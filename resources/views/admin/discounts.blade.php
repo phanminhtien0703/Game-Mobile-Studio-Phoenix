@@ -11,7 +11,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Danh sách Game | Sneat - Bootstrap Dashboard</title>
+    <title>Danh sách Sự Kiện Giảm Giá | Sneat - Bootstrap Dashboard</title>
 
     <meta name="description" content="" />
 
@@ -46,7 +46,7 @@
         <!-- Menu -->
         @include('layouts.dashboard')
 
-        <!-- Layout container -->
+        <!-- Layout page -->
         <div class="layout-page">
           <!-- Navbar -->
 
@@ -158,44 +158,77 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <!-- Basic Bootstrap Table -->
               <div class="card">
-                <h5 class="card-header">Danh sách game</h5>
+                <h5 class="card-header">Danh sách sự kiện giảm giá</h5>
                 <div class="card-body">
-                  <a href="{{ route('admin.games.create') }}" class="btn btn-primary btn-sm mb-3">+ Tạo Game Mới</a>
+                  <a href="{{ route('admin.discounts.create') }}" class="btn btn-primary btn-sm mb-3">+ Tạo Sự Kiện Mới</a>
                 </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th>Avatar</th>
-                        <th>Tên game</th>
-                        <th>Thể Loại</th>
+                        <th>ID</th>
+                        <th>Banner</th>
+                        <th>Tên Sự Kiện</th>
+                        <th>Game</th>
+                        <th>Thời Gian</th>
                         <th>Trạng Thái</th>
                         <th>Hành Động</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      @foreach($games as $game)
+                      @foreach($discounts as $discount)
                       <tr>
+                        <td>{{ $discount->discount_id }}</td>
                         <td>
-                          <img src="{{ $game->avatar_url }}" alt="Avatar" class="rounded" style="width: 50px; height: 50px;" />
+                          @if($discount->banner_url)
+                            <img src="{{ $discount->banner_url }}" alt="Banner" class="rounded" style="width: 80px; height: 40px; object-fit: cover;" />
+                          @else
+                            <span class="text-muted">Không có banner</span>
+                          @endif
                         </td>
                         <td>
-                          <span>{{ $game->game_name }}</span>
+                          <span>{{ $discount->event_name }}</span>
                         </td>
-                        <td>{{ $game->genre }}</td>
+                        <td>{{ $discount->game ? $discount->game->game_name : 'N/A' }}</td>
                         <td>
-                          <span class="badge bg-label-info me-1">
-                            {{ $game->game_status ? strtoupper($game->game_status->status_name) : 'Không xác định' }}
-                          </span>
+                          @if($discount->start_date && $discount->end_date)
+                            <small>
+                              <strong>Từ:</strong> {{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y H:i') }}<br>
+                              <strong>Đến:</strong> {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y H:i') }}
+                            </small>
+                          @else
+                            <span class="text-muted">Chưa cập nhật</span>
+                          @endif
+                        </td>
+                        <td>
+                          @php
+                            $now = now();
+                            $status = 'Chưa bắt đầu';
+                            $badgeClass = 'bg-label-secondary';
+                            
+                            if ($discount->start_date && $discount->end_date) {
+                              $startDate = \Carbon\Carbon::parse($discount->start_date);
+                              $endDate = \Carbon\Carbon::parse($discount->end_date);
+                              
+                              if ($now->greaterThan($endDate)) {
+                                $status = 'Đã kết thúc';
+                                $badgeClass = 'bg-label-danger';
+                              } elseif ($now->between($startDate, $endDate)) {
+                                $status = 'Đang diễn ra';
+                                $badgeClass = 'bg-label-success';
+                              }
+                            }
+                          @endphp
+                          <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                         </td>
                         <td>
                           <div class="btn-group" role="group">
-                            <a href="javascript:void(0);" onclick="showGameDetails('{{ $game->game_id }}')" class="btn btn-info btn-sm">Xem</a>
-                            <a href="{{ route('admin.games.edit', $game->game_id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{ route('admin.games.destroy', $game->game_id) }}" method="POST" style="display:inline;">
+                            <a href="javascript:void(0);" onclick="showDiscountDetails('{{ $discount->discount_id }}')" class="btn btn-info btn-sm">Xem</a>
+                            <a href="{{ route('admin.discounts.edit', $discount->discount_id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{ route('admin.discounts.destroy', $discount->discount_id) }}" method="POST" style="display:inline;">
                               @csrf
                               @method('DELETE')
-                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xoá game này?')">Xoá</button>
+                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xoá sự kiện này?')">Xoá</button>
                             </form>
                           </div>
                         </td>
@@ -208,19 +241,20 @@
               <!--/ Basic Bootstrap Table -->
 
               <!-- Modal Popup -->
-              <div class="modal fade" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+              <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="gameModalLabel">Chi tiết game</h5>
+                      <h5 class="modal-title" id="discountModalLabel">Chi tiết sự kiện</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" id="gameModalBody">
+                    <div class="modal-body" id="discountModalBody">
                       <!-- Nội dung sẽ được cập nhật qua AJAX -->
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             <!-- / Content -->
 
             <!-- Footer -->
@@ -280,10 +314,10 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <script>
-        function showGameDetails(gameId) {
-            console.log("game_id = " + gameId);
-            // Gửi yêu cầu AJAX để lấy dữ liệu chi tiết game
-            fetch(`/admin/games/${gameId}`)
+        function showDiscountDetails(discountId) {
+            console.log("discount_id = " + discountId);
+            // Gửi yêu cầu AJAX để lấy dữ liệu chi tiết discount
+            fetch(`/admin/discounts/${discountId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -292,42 +326,38 @@
                 })
                 .then(data => {
                     // Cập nhật nội dung modal với đầy đủ thông tin
-                    document.getElementById('gameModalBody').innerHTML = `
+                    document.getElementById('discountModalBody').innerHTML = `
                         <div class="row">
-                            <div class="col-md-5">
-                                <img src="${data.avatar_url}" alt="${data.game_name}" class="img-fluid rounded mb-3" />
-                                ${data.banner_url ? `<img src="${data.banner_url}" alt="Banner" class="img-fluid rounded" />` : ''}
+                            <div class="col-md-12">
+                                ${data.banner_url ? `<img src="${data.banner_url}" alt="Banner" class="img-fluid rounded mb-3" />` : '<p class="text-muted">Không có banner</p>'}
                             </div>
-                            <div class="col-md-7">
-                                <h5 class="mb-3">${data.game_name}</h5>
+                            <div class="col-md-12">
+                                <h5 class="mb-3">${data.event_name}</h5>
                                 <div class="row mb-3">
                                     <div class="col-6">
+                                        <p><strong>ID Sự Kiện:</strong> ${data.discount_id}</p>
+                                        <p><strong>Game:</strong> ${data.game_name}</p>
                                         <p><strong>ID Game:</strong> ${data.game_id}</p>
-                                        <p><strong>Thể loại:</strong> ${data.genre || 'Chưa cập nhật'}</p>
-                                        <p><strong>Trạng thái:</strong> <span class="badge bg-label-info">${data.status_name}</span></p>
                                     </div>
                                     <div class="col-6">
-                                        <p><strong>Status Code:</strong> ${data.status || 'Chưa cập nhật'}</p>
-                                        <p><strong>Ngày phát hành:</strong> ${data.release_date ? new Date(data.release_date).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
-                                        <p><strong>Cập nhật lần cuối:</strong> ${data.last_updated ? new Date(data.last_updated).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
+                                        <p><strong>Thời gian bắt đầu:</strong> ${data.start_date ? new Date(data.start_date).toLocaleString('vi-VN') : 'Chưa cập nhật'}</p>
+                                        <p><strong>Thời gian kết thúc:</strong> ${data.end_date ? new Date(data.end_date).toLocaleString('vi-VN') : 'Chưa cập nhật'}</p>
+                                        <p><strong>Ngày tạo:</strong> ${data.created_at ? new Date(data.created_at).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
                                     </div>
                                 </div>
                                 <hr />
-                                <p><strong>Mô tả:</strong></p>
-                                <p>${data.description || 'Chưa cập nhật'}</p>
-                                <hr />
-                                <p><strong>Link tải xuống:</strong></p>
-                                ${data.download_link ? `<a href="${data.download_link}" target="_blank" class="btn btn-sm btn-primary">Tải xuống</a>` : '<span class="text-muted">Chưa cập nhật</span>'}
+                                <p><strong>Link sự kiện:</strong></p>
+                                ${data.event_link ? `<a href="${data.event_link}" target="_blank" class="btn btn-sm btn-primary">Xem sự kiện</a>` : '<span class="text-muted">Chưa cập nhật</span>'}
                             </div>
                         </div>
                     `;
                     // Hiển thị modal
-                    const gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
-                    gameModal.show();
+                    const discountModal = new bootstrap.Modal(document.getElementById('discountModal'));
+                    discountModal.show();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Lỗi khi tải dữ liệu game!');
+                    alert('Lỗi khi tải dữ liệu sự kiện!');
                 });
         }
     </script>

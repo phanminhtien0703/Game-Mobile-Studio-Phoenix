@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TouristController;
+use App\Http\Controllers\DiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +30,11 @@ Route::prefix('admin')->group(function () {
 
     // Game routes
     Route::resource('games', GameController::class)->names('admin.games');
-    Route::get('/games/show/{game_id}', [GameController::class, 'show'])->name('admin.games.show')->where('game_id', '.*');
-    Route::get('/games/create', [GameController::class, 'create'])->name('admin.games.create');
-    Route::get('/games/edit', [GameController::class, 'edit'])->name('admin.games.edit');
-    Route::delete('/games/destroy', [GameController::class, 'destroy'])->name('admin.games.destroy');
+    Route::get('/games/{game_id}', [GameController::class, 'show'])->name('admin.games.show')->where('game_id', '.*');
+
+    // Discount routes
+    Route::resource('discounts', DiscountController::class)->names('admin.discounts');
+    Route::get('/discounts/{discount_id}', [DiscountController::class, 'show'])->name('admin.discounts.show');
 
     // Activity routes
     Route::get('/activities', [ActivityController::class, 'index'])->name('admin.activities.index');

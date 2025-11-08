@@ -86,27 +86,28 @@
                     <i class="menu-icon tf-icons bx bx-plus-circle"></i>
                     <div class="text-truncate" data-i18n="Thêm Game Mới">Thêm Game mới</div>
                   </a>
-                </li>
-                <li class="menu-item">
-                  <a href="layouts-without-navbar.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Without navbar">Without navbar</div>
+              </ul>
+            </li>
+
+            <!-- Quản lý Khuyến Mãi -->
+            <li class="menu-item {{ request()->routeIs('admin.discounts.*') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
+                <div class="text-truncate" data-i18n="Quản lý Khuyến Mãi">Quản lý Khuyến Mãi</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('admin.discounts.index') ? 'active' : '' }}">
+                  <a href="{{ route('admin.discounts.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                    <div class="text-truncate" data-i18n="Danh sách Khuyến Mãi">Danh sách Khuyến Mãi</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="layouts-fluid.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Fluid">Fluid</div>
+                <li class="menu-item {{ request()->routeIs('admin.discounts.create') ? 'active' : '' }}">
+                  <a href="{{ route('admin.discounts.create') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                    <div class="text-truncate" data-i18n="Thêm Khuyến Mãi Mới">Thêm Khuyến Mãi mới</div>
                   </a>
-                </li>
-                <li class="menu-item">
-                  <a href="layouts-container.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Container">Container</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div class="text-truncate" data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
               </ul>
             </li>
 

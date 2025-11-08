@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html
   lang="en"
   class="layout-menu-fixed layout-compact"
@@ -11,7 +10,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Sửa Game | Sneat - Bootstrap Dashboard</title>
+    <title>Sửa Sự Kiện Giảm Giá | Sneat - Bootstrap Dashboard</title>
 
     <meta name="description" content="" />
 
@@ -126,7 +125,6 @@
               </ul>
             </div>
           </nav>
-
           <!-- / Navbar -->
 
           <!-- Content wrapper -->
@@ -137,69 +135,59 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                      <h5 class="card-title">Sửa Game: {{ $game->game_name }}</h5>
+                      <h5 class="card-title">Sửa Sự Kiện: {{ $discount->event_name }}</h5>
                     </div>
                     <div class="card-body">
-                      <form action="{{ route('admin.games.update', $game->game_id) }}" method="POST" enctype="multipart/form-data">
+                      <form action="{{ route('admin.discounts.update', $discount->discount_id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                        <!-- Game ID (Read-only) -->
+                        <!-- Discount ID (Read-only) -->
                         <div class="mb-3">
-                          <label class="form-label" for="game_id">ID Game</label>
-                          <input type="text" class="form-control" id="game_id" value="{{ $game->game_id }}" disabled>
-                          <small class="form-text text-muted">ID game không thể thay đổi</small>
+                          <label class="form-label" for="discount_id">ID Sự Kiện</label>
+                          <input type="text" class="form-control" id="discount_id" value="{{ $discount->discount_id }}" disabled>
+                          <small class="form-text text-muted">ID sự kiện không thể thay đổi</small>
                         </div>
 
-                        <!-- Game Name -->
+                        <!-- Game -->
                         <div class="mb-3">
-                          <label class="form-label" for="game_name">Tên Game <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control @error('game_name') is-invalid @enderror" id="game_name" name="game_name" placeholder="Nhập tên game" value="{{ old('game_name', $game->game_name) }}" required>
-                          @error('game_name')
+                          <label class="form-label" for="game_id">Game <span class="text-danger">*</span></label>
+                          <select class="form-select @error('game_id') is-invalid @enderror" id="game_id" name="game_id" required>
+                            <option value="">-- Chọn game --</option>
+                            @foreach($games as $game)
+                              <option value="{{ $game->game_id }}" {{ old('game_id', $discount->game_id) == $game->game_id ? 'selected' : '' }}>
+                                {{ $game->game_name }}
+                              </option>
+                            @endforeach
+                          </select>
+                          @error('game_id')
                             <span class="invalid-feedback">{{ $message }}</span>
                           @enderror
                         </div>
 
-                        <!-- Genre -->
+                        <!-- Event Name -->
                         <div class="mb-3">
-                          <label class="form-label" for="genre">Thể Loại <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control @error('genre') is-invalid @enderror" id="genre" name="genre" placeholder="VD: MMO, Action, RPG" value="{{ old('genre', $game->genre) }}" required>
-                          @error('genre')
+                          <label class="form-label" for="event_name">Tên Sự Kiện <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control @error('event_name') is-invalid @enderror" id="event_name" name="event_name" placeholder="VD: Tết Event 2025, Summer Sale" value="{{ old('event_name', $discount->event_name) }}" required>
+                          @error('event_name')
                             <span class="invalid-feedback">{{ $message }}</span>
                           @enderror
                         </div>
 
-                        <!-- Description -->
+                        <!-- Start Date -->
                         <div class="mb-3">
-                          <label class="form-label" for="description">Mô Tả <span class="text-danger">*</span></label>
-                          <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4" placeholder="Nhập mô tả chi tiết về game" required>{{ old('description', $game->description) }}</textarea>
-                          @error('description')
+                          <label class="form-label" for="start_date">Thời Gian Bắt Đầu <span class="text-danger">*</span></label>
+                          <input type="datetime-local" class="form-control @error('start_date') is-invalid @enderror" id="start_date" name="start_date" value="{{ old('start_date', $discount->start_date ? \Carbon\Carbon::parse($discount->start_date)->format('Y-m-d\TH:i') : '') }}" required>
+                          @error('start_date')
                             <span class="invalid-feedback">{{ $message }}</span>
                           @enderror
                         </div>
 
-                        <!-- Release Date -->
+                        <!-- End Date -->
                         <div class="mb-3">
-                          <label class="form-label" for="release_date">Ngày Phát Hành <span class="text-danger">*</span></label>
-                          <input type="date" class="form-control @error('release_date') is-invalid @enderror" id="release_date" name="release_date" value="{{ old('release_date', $game->release_date) }}" required>
-                          @error('release_date')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                          @enderror
-                        </div>
-
-                        <!-- Avatar URL -->
-                        <div class="mb-3">
-                          <label class="form-label" for="avatar_url">Avatar</label>
-                          <input type="file" class="form-control @error('avatar_url') is-invalid @enderror" id="avatar_url" name="avatar_url" accept="image/*" onchange="previewImage(event, 'avatarPreview')">
-                          <small class="form-text text-muted">Tối đa 2MB (JPEG, PNG, JPG, GIF). Để trống nếu không muốn thay đổi</small>
-                          @if($game->avatar_url)
-                            <div class="mt-2">
-                              <small class="form-text text-muted">Avatar hiện tại:</small><br>
-                              <img src="{{ $game->avatar_url }}" alt="Avatar" style="max-width: 150px; max-height: 150px; border-radius: 4px;">
-                            </div>
-                          @endif
-                          <div id="avatarPreview" class="mt-2"></div>
-                          @error('avatar_url')
+                          <label class="form-label" for="end_date">Thời Gian Kết Thúc <span class="text-danger">*</span></label>
+                          <input type="datetime-local" class="form-control @error('end_date') is-invalid @enderror" id="end_date" name="end_date" value="{{ old('end_date', $discount->end_date ? \Carbon\Carbon::parse($discount->end_date)->format('Y-m-d\TH:i') : '') }}" required>
+                          @error('end_date')
                             <span class="invalid-feedback">{{ $message }}</span>
                           @enderror
                         </div>
@@ -209,10 +197,10 @@
                           <label class="form-label" for="banner_url">Banner</label>
                           <input type="file" class="form-control @error('banner_url') is-invalid @enderror" id="banner_url" name="banner_url" accept="image/*" onchange="previewImage(event, 'bannerPreview')">
                           <small class="form-text text-muted">Tối đa 5MB (JPEG, PNG, JPG, GIF). Để trống nếu không muốn thay đổi</small>
-                          @if($game->banner_url)
+                          @if($discount->banner_url)
                             <div class="mt-2">
                               <small class="form-text text-muted">Banner hiện tại:</small><br>
-                              <img src="{{ $game->banner_url }}" alt="Banner" style="max-width: 300px; max-height: 150px; border-radius: 4px;">
+                              <img src="{{ $discount->banner_url }}" alt="Banner" style="max-width: 300px; max-height: 150px; border-radius: 4px;">
                             </div>
                           @endif
                           <div id="bannerPreview" class="mt-2"></div>
@@ -221,34 +209,19 @@
                           @enderror
                         </div>
 
-                        <!-- Download Link -->
+                        <!-- Event Link -->
                         <div class="mb-3">
-                          <label class="form-label" for="download_link">Link Tải Xuống</label>
-                          <input type="url" class="form-control @error('download_link') is-invalid @enderror" id="download_link" name="download_link" placeholder="Nhập link tải xuống game" value="{{ old('download_link', $game->download_link) }}">
-                          @error('download_link')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                          @enderror
-                        </div>
-
-                        <!-- Status ID -->
-                        <div class="mb-3">
-                          <label class="form-label" for="status_id">Trạng Thái <span class="text-danger">*</span></label>
-                          <select class="form-select @error('status_id') is-invalid @enderror" id="status_id" name="status_id" required>
-                            <option value="">-- Chọn trạng thái --</option>
-                            <option value="game_hot" {{ old('status_id', $game->status_id) == 'game_hot' ? 'selected' : '' }}>Game Hot</option>
-                            <option value="game_new" {{ old('status_id', $game->status_id) == 'game_new' ? 'selected' : '' }}>Game Mới</option>
-                            <option value="game_coming_soon" {{ old('status_id', $game->status_id) == 'game_coming_soon' ? 'selected' : '' }}>Sắp Phát Hành</option>
-                            <option value="game_offline" {{ old('status_id', $game->status_id) == 'game_offline' ? 'selected' : '' }}>Ngừng Hoạt Động</option>
-                          </select>
-                          @error('status_id')
+                          <label class="form-label" for="event_link">Link Sự Kiện</label>
+                          <input type="url" class="form-control @error('event_link') is-invalid @enderror" id="event_link" name="event_link" placeholder="Nhập link chi tiết sự kiện" value="{{ old('event_link', $discount->event_link) }}">
+                          @error('event_link')
                             <span class="invalid-feedback">{{ $message }}</span>
                           @enderror
                         </div>
 
                         <!-- Form Actions -->
                         <div class="mb-3">
-                          <button type="submit" class="btn btn-primary">Cập Nhật Game</button>
-                          <a href="{{ route('admin.games.index') }}" class="btn btn-secondary">Hủy</a>
+                          <button type="submit" class="btn btn-primary">Cập Nhật Sự Kiện</button>
+                          <a href="{{ route('admin.discounts.index') }}" class="btn btn-secondary">Hủy</a>
                         </div>
                       </form>
                     </div>
@@ -305,7 +278,7 @@
         if (file) {
           const reader = new FileReader();
           reader.onload = function(e) {
-            preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 4px;">`;
+            preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 300px; max-height: 150px; border-radius: 4px;">`;
           };
           reader.readAsDataURL(file);
         } else {
