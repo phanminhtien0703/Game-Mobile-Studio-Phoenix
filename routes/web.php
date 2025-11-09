@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\DiscountController;
@@ -19,14 +20,23 @@ use App\Http\Controllers\GiftcodeController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Redirect root to admin login
+Route::get('/', function () {
+    return redirect()->route('home.index');
+});
 
+// Admin Login Routes (không cần authentication)
 Route::prefix('admin')->group(function () {
-    // Admin routes
-    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('/login', [AdminController::class, 'loginPost'])->name('admin.login.post');
+});
+
+// Admin Protected Routes (cần authentication)
+Route::prefix('admin')->middleware(['admin.auth'])->group(function () {
+    // Dashboard
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    
     Route::resource('admins', AdminController::class)->names('admin.admins');
 
     // Game routes
@@ -47,15 +57,3 @@ Route::prefix('admin')->group(function () {
     // Tourist routes
     Route::get('/tourists', [TouristController::class, 'index'])->name('admin.tourists.index');
 });
-
-// Route::get('/users', [UserController::class, 'index']);
-
-// Route::prefix('admin')->group(function () {
-//     Route::get('/', function () {
-//         return view('admin.admin');
-//     });
-
-//     Route::get('/dashboard', function () {
-//         return view('admin.dashboard');
-//     });
-// });
