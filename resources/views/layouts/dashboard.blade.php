@@ -1,4 +1,4 @@
-<!-- Menu -->
+<!-- Sidebar Menu -->
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="{{ url('/admin') }}" class="app-brand-link">
@@ -108,6 +108,29 @@
                     <i class="menu-icon tf-icons bx bx-plus-circle"></i>
                     <div class="text-truncate" data-i18n="Thêm Khuyến Mãi Mới">Thêm Khuyến Mãi mới</div>
                   </a>
+              </ul>
+            </li>
+
+            <!-- Quản lý Giftcode -->
+            <li class="menu-item {{ request()->routeIs('admin.giftcodes.*') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-gift"></i>
+                <div class="text-truncate" data-i18n="Quản lý Giftcode">Quản lý Giftcode</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('admin.giftcodes.index') ? 'active' : '' }}">
+                  <a href="{{ route('admin.giftcodes.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                    <div class="text-truncate" data-i18n="Danh sách Giftcode">Danh sách Giftcode</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('admin.giftcodes.create') ? 'active' : '' }}">
+                  <a href="{{ route('admin.giftcodes.create') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                    <div class="text-truncate" data-i18n="Thêm Giftcode Mới">Thêm Giftcode mới</div>
+                  </a>
+                </li>
               </ul>
             </li>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\GiftcodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,10 @@ Route::prefix('admin')->group(function () {
     // Discount routes
     Route::resource('discounts', DiscountController::class)->names('admin.discounts');
     Route::get('/discounts/{discount_id}', [DiscountController::class, 'show'])->name('admin.discounts.show');
+
+    // Giftcode routes
+    Route::resource('giftcodes', GiftcodeController::class)->names('admin.giftcodes');
+    Route::get('/giftcodes/{giftcode_id}', [GiftcodeController::class, 'show'])->name('admin.giftcodes.show');
 
     // Activity routes
     Route::get('/activities', [ActivityController::class, 'index'])->name('admin.activities.index');

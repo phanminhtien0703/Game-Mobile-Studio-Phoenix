@@ -10,6 +10,8 @@ class Game extends Model
 {
     use HasFactory;
 
+    protected $table = 'games'; // Tên bảng đúng là games
+
     protected $primaryKey = 'game_id';
     
     protected $keyType = 'string';
