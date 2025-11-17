@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('title', 'Tạo Giftcode Mới | Game Mobile Studio')
 
@@ -157,3 +157,4 @@
   });
 </script>
 @endpush
+

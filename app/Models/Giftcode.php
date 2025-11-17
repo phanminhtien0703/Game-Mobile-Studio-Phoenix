@@ -9,7 +9,7 @@ class Giftcode extends Model
 {
     use HasFactory;
 
-    protected $table = 'giftcode';
+    protected $table = 'giftcodes';
     protected $primaryKey = 'giftcode_id';
     public $timestamps = true;
 
@@ -18,14 +18,12 @@ class Giftcode extends Model
         'message',
         'total_quantity',
         'used_quantity',
-        'logo_game_url',
-        'created_at',
-        'updated_at'
+        'logo_game_url'
     ];
 
-    protected $dates = [
-        'created_at',
-        'updated_at'
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     // Relationship with Game

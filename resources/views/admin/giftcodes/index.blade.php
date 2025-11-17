@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('title', 'Giftcode | Game Mobile Studio')
 
@@ -17,12 +17,14 @@
 .giftcode-item {
   display: flex;
   margin-bottom: 1.5rem;
+  height: 650px;
 }
 .giftcode-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .giftcode-card:hover {
   transform: translateY(-5px);
@@ -40,21 +42,34 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: 0.75rem;
 }
 .card-title {
   min-height: 2.5rem;
   display: flex;
   align-items: center;
+  font-weight: 600;
+  margin: 0;
 }
 .alert-info {
-  min-height: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+.alert-info small {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
 }
 .quantity-info {
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0;
+  margin: 0;
   font-size: 0.9rem;
 }
 .btn-request-code {
@@ -62,12 +77,18 @@
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  margin-top: auto;
+  flex-shrink: 0;
 }
 .admin-actions {
-  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
   padding-top: 0.75rem;
   border-top: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+.admin-actions a,
+.admin-actions form {
+  flex: 1;
 }
 </style>
 @endpush
@@ -239,3 +260,4 @@
     }
 </script>
 @endpush
+

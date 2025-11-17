@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('title', 'Tạo Game Mới | Game Mobile Studio')
 
@@ -134,3 +134,4 @@
   }
 </script>
 @endpush
+

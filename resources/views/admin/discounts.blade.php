@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('title', 'Danh sách Sự Kiện Giảm Giá | Game Mobile Studio')
 
@@ -214,3 +214,4 @@
     }
 </script>
 @endpush
+

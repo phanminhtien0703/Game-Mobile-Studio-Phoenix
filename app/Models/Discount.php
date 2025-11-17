@@ -9,11 +9,11 @@ class Discount extends Model
 {
     use HasFactory;
 
-    protected $table = 'discount';
+    protected $table = 'discounts';
 
     protected $primaryKey = 'discount_id';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'game_id',
@@ -21,14 +21,12 @@ class Discount extends Model
         'banner_url',
         'event_link',
         'start_date',
-        'end_date',
-        'created_at'
+        'end_date'
     ];
 
-    protected $dates = [
-        'start_date',
-        'end_date',
-        'created_at'
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     // Relationship with Game

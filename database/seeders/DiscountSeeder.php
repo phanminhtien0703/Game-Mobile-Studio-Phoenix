@@ -16,12 +16,15 @@ class DiscountSeeder extends Seeder
         $eventTypes = ['Tết Event', 'Summer Sale', 'Black Friday', 'Christmas Event', 'Anniversary'];
 
         for ($i = 0; $i < 10; $i++) {
-            DB::table('discount')->insert([
+            DB::table('discounts')->insert([
                 'game_id' => $faker->randomElement($gameIds),
                 'event_name' => $faker->randomElement($eventTypes) . ' ' . $faker->year(),
                 'banner_url' => $faker->imageUrl(1200, 400, 'games'),
                 'event_link' => $faker->url(),
-                'created_at' => $faker->dateTimeBetween('-6 months', 'now')
+                'start_date' => $faker->dateTimeBetween('-6 months', 'now'),
+                'end_date' => $faker->dateTimeBetween('now', '+6 months'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

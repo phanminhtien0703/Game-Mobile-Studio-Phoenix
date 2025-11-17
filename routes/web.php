@@ -8,6 +8,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\GiftcodeController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,7 @@ use App\Http\Controllers\GiftcodeController;
 */
 
 // Redirect root to admin login
-Route::get('/', function () {
-    return redirect()->route('home.index');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // Admin Login Routes (không cần authentication)
 Route::prefix('admin')->group(function () {
