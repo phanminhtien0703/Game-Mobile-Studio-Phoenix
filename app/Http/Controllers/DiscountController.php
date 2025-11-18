@@ -77,7 +77,7 @@ class DiscountController extends Controller
             $validated['banner_url'] = '/storage/' . $bannerPath;
         }
 
-        // Update discount
+        // Update discount (không update updated_at vì bảng không có cột này)
         $discount->update($validated);
 
         return redirect()->route('admin.discounts.index')->with('success', 'Cập nhật sự kiện giảm giá thành công!');

@@ -13,7 +13,7 @@ class Discount extends Model
 
     protected $primaryKey = 'discount_id';
 
-    public $timestamps = true;
+    public $timestamps = false;  // Tắt timestamps vì bảng không có updated_at
 
     protected $fillable = [
         'game_id',
