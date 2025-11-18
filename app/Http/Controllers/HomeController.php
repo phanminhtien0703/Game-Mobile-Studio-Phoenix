@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Discount;
+use App\Models\Giftcode;
 
 class HomeController extends Controller
 {
@@ -45,6 +46,11 @@ class HomeController extends Controller
                                   ->get();
         }
         
-        return view('home.index', compact('bannerGames', 'recommendedGames', 'promotions'));
+        // Lấy các giftcode từ bảng giftcodes (limit 6)
+        $giftcodes = Giftcode::with('game')
+                             ->limit(6)
+                             ->get();
+        
+        return view('home.index', compact('bannerGames', 'recommendedGames', 'promotions', 'giftcodes'));
     }
 }
