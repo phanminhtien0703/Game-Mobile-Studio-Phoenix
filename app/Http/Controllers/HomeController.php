@@ -51,6 +51,11 @@ class HomeController extends Controller
                              ->limit(6)
                              ->get();
         
-        return view('home.index', compact('bannerGames', 'recommendedGames', 'promotions', 'giftcodes'));
+        // Lấy các game để hiển thị tin tức/lịch khai mở server (limit 5)
+        $news = Game::with('game_status')
+                    ->limit(5)
+                    ->get();
+        
+        return view('home.index', compact('bannerGames', 'recommendedGames', 'promotions', 'giftcodes', 'news'));
     }
 }

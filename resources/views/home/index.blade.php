@@ -70,6 +70,9 @@
             @include('layouts.home.recommended-games')
             @include('layouts.home.promotions')
             @include('layouts.home.giftcodes-section')
+            @include('layouts.home.news')
+            @include('layouts.home.bottom-nav')
+            @include('layouts.home.footer')
         </div>
     </div>
 </body> 
