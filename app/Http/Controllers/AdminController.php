@@ -77,6 +77,6 @@ class AdminController extends Controller
 
     public function games()
     {
-        return view('admin.games');
+        return view('admin.games.index');
     }
 }

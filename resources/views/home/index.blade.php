@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
@@ -11,39 +11,36 @@
     <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/e6b54ef23715d9a1.css') }}" data-precedence="next">
     <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/9706cae02c06bb94.css') }}" data-precedence="next">
 
-    <!-- Title & Description -->
-    <meta property="og:title" content="Game Mobile Studio - Phoenix" />
-    <meta property="og:description" content="C?ng game online gi?i tr? da n?n t?ng v?i h?ng tram game hot, du?c c?p nh?t li?n t?c, da d?ng th? lo?i, t? gi?i tr? nh? nh?ng d?n nh?p vai h?p d?n." />
-    <meta property="og:url" content="https://gamemobilestudio.cloud/images/pattern-bg.png" />
-    <meta property="og:type" content="website" />
-
-    <!-- Banner hi?n th? khi share -->
-    <meta property="og:image" content="https://gamemobilestudio.cloud/images/pattern-bg.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Cho Twitter (n?u share l?n X) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Game Mobile Studio - Phoenix" />
-    <meta name="twitter:description" content="C?ng game online gi?i tr? da n?n t?ng v?i h?ng tram game hot, du?c c?p nh?t li?n t?c, da d?ng th? lo?i." />
-    <meta name="twitter:image" content="https://gamemobilestudio.cloud/images/pattern-bg.png" />
-
-
-
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="next-size-adjust" content="">
-
-
-    <title>Game Mobile Studio - Phoenix </title>
-    <meta name="description" content="C?ng game online gi?i tr? da n?n t?ng v?i h?ng tram game hot, du?c c?p nh?t li?n t?c, da d?ng th? lo?i, t? gi?i tr? nh? nh?ng d?n chi?n thu?t cang n?o. Choi ngay m?i l?c m?i noi, c? th? choi tr?c tuy?n tr?n website ho?c t?i v? mobile">
-    <meta property="og:title" content="Game Mobile Studio - Phoenix ">
-    <meta property="og:description" content="C?ng game online gi?i tr? da n?n t?ng v?i h?ng tram game hot, du?c c?p nh?t li?n t?c, da d?ng th? lo?i, t? gi?i tr? nh? nh?ng d?n chi?n thu?t cang n?o. Choi ngay m?i l?c m?i noi, c? th? choi tr?c tuy?n tr?n website ho?c t?i v? mobile">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Game Mobile Studio - Phoenix ">
-    <meta name="twitter:description" content="C?ng game online gi?i tr? da n?n t?ng v?i h?ng tram game hot, du?c c?p nh?t li?n t?c, da d?ng th? lo?i, t? gi?i tr? nh? nh?ng d?n chi?n thu?t cang n?o. Choi ngay m?i l?c m?i noi, c? th? choi tr?c tuy?n tr?n website ho?c t?i v? mobile">
+    <!-- SEO Meta Tags -->
+    <title>Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu</title>
+    <meta name="description" content="Công game online giải trí đa nền tảng với hàng trăm game hot, được cập nhật liên tục, đa dạng thể loại, từ giải trí nhẹ nhàng đến chiến thuật căng não. Chơi ngay mọi lúc mọi nơi.">
+    <meta name="keywords" content="game mobile, game online, game phổ biến, game hot, game mới, game RPG, game action, game MMO">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Game Mobile Studio">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ config('app.url') }}">
+    
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu">
+    <meta property="og:description" content="Công game online giải trí đa nền tảng với hàng trăm game hot, được cập nhật liên tục, đa dạng thể loại.">
+    <meta property="og:url" content="{{ config('app.url') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ config('app.url') }}/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Game Mobile Studio - Phoenix">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu">
+    <meta name="twitter:description" content="Công game online giải trí đa nền tảng với hàng trăm game hot, được cập nhật liên tục.">
+    <meta name="twitter:image" content="{{ config('app.url') }}/images/og-image.jpg">
+    
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 
 <body class="__className_73ee6c">

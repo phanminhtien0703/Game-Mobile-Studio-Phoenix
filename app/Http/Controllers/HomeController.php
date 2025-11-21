@@ -27,8 +27,11 @@ class HomeController extends Controller
             $bannerGames = Game::limit(5)->get();
         }
         
-        // Lấy các game đề xuất (tất cả games, limit 7)
-        $recommendedGames = Game::with('game_status')->limit(7)->get();
+        // Lấy các game đề xuất (tất cả games, limit 7, sắp xếp theo sort_order)
+        $recommendedGames = Game::with('game_status')
+                                ->orderBy('sort_order', 'asc')
+                                ->limit(7)
+                                ->get();
         
         // Lấy các sự kiện/khuyến mãi từ bảng discounts (limit 5)
         $promotions = Discount::whereNotNull('banner_url')
@@ -51,8 +54,9 @@ class HomeController extends Controller
                              ->limit(6)
                              ->get();
         
-        // Lấy các game để hiển thị tin tức/lịch khai mở server (limit 5)
+        // Lấy các game để hiển thị tin tức/lịch khai mở server (limit 5, sắp xếp theo sort_order)
         $news = Game::with('game_status')
+                    ->orderBy('sort_order', 'asc')
                     ->limit(5)
                     ->get();
         

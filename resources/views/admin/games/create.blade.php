@@ -104,6 +104,16 @@
                           @enderror
                         </div>
 
+                        <!-- Sort Order -->
+                        <div class="mb-3">
+                          <label class="form-label" for="sort_order">Thứ Tự Sắp Xếp</label>
+                          <input type="number" class="form-control @error('sort_order') is-invalid @enderror" id="sort_order" name="sort_order" placeholder="Nhập thứ tự sắp xếp (số nguyên)" value="{{ old('sort_order') }}">
+                          <small class="form-text text-muted">Giá trị nhỏ hơn = vị trí cao hơn trong danh sách</small>
+                          @error('sort_order')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                          @enderror
+                        </div>
+
                         <!-- Form Actions -->
                         <div class="mb-3">
                           <button type="submit" class="btn btn-primary">Tạo Game</button>

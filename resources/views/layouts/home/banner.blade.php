@@ -14,6 +14,7 @@
 </style>
 
 <section class="wrapper-slider" data-games="{{ base64_encode(serialize($bannerGames ?? [])) }}">
+    <h1 style="position: absolute; left: -9999px;">Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu</h1>
     <div class="swiper" id="bannerSwiper">
         <div class="swiper-wrapper">
             @forelse($bannerGames as $game)

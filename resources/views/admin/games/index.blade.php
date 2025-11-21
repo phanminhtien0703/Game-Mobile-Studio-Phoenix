@@ -26,6 +26,7 @@
             <th>Tên game</th>
             <th>Thể Loại</th>
             <th>Trạng Thái</th>
+            <th>Thứ tự</th>
             <th>Hành Động</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@
                             {{ $game->game_status ? strtoupper($game->game_status->status_name) : 'Không xác định' }}
                           </span>
                         </td>
+                        <td>{{ $game->sort_order ?? 'N/A' }}</td>
                         <td>
                           <div class="btn-group" role="group">
                             <a href="javascript:void(0);" onclick="showGameDetails('{{ $game->game_id }}')" class="btn btn-info btn-sm">Xem</a>
@@ -58,7 +60,7 @@
                       </tr>
                       @empty
                       <tr>
-                        <td colspan="5" class="text-center py-4">
+                        <td colspan="6" class="text-center py-4">
                           <div class="text-muted">
                             <i class="bx bx-info-circle bx-sm mb-2"></i>
                             <p class="mb-0">Chưa có game nào.</p>
@@ -188,4 +190,3 @@
     }
 </script>
 @endpush
-

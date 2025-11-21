@@ -12,8 +12,8 @@ class GameController extends Controller
 {
     public function index()
     {
-        $games = Game::with('game_status')->get(); // Tải trước mối quan hệ game_status
-        return view('admin.games', compact('games'));
+        $games = Game::with('game_status')->orderBy('sort_order', 'asc')->get(); // Sắp xếp theo sort_order
+        return view('admin.games.index', compact('games'));
     }
 
     public function create()
@@ -34,6 +34,7 @@ class GameController extends Controller
             'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'download_link' => 'nullable|url|max:255',
             'status_id' => 'required|string|max:100',
+            'sort_order' => 'nullable|integer',
         ]);
 
         // Handle avatar upload
@@ -71,6 +72,7 @@ class GameController extends Controller
             'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'download_link' => 'nullable|url|max:255',
             'status_id' => 'required|string|max:100',
+            'sort_order' => 'nullable|integer',
         ]);
 
         // Handle avatar upload

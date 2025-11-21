@@ -29,7 +29,8 @@ class Game extends Model
         'avatar_url',
         'banner_url',
         'download_link',
-        'status_id'
+        'status_id',
+        'sort_order'
     ];
 
     protected $dates = [
