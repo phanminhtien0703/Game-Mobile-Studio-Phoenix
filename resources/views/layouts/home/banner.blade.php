@@ -17,19 +17,21 @@
     <h1 style="position: absolute; left: -9999px;">Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu</h1>
     <div class="swiper" id="bannerSwiper">
         <div class="swiper-wrapper">
-            @forelse($bannerGames as $game)
-                <div class="swiper-slide">
-                    <a target="_blank" class="item-banner" href="">
-                        <img class="object-fit-cover h-100 w-100 banner-image" alt="{{ $game->game_name }}" src="{{ $game->banner_url ? asset($game->banner_url) : asset('assets/home/images/pattern-bg.png') }}" style="width: 100%; height: 300px; object-fit: cover;" data-url="{{ $game->banner_url }}" data-name="{{ $game->game_name }}">
-                    </a>
-                </div>
-            @empty
+            @if(isset($bannerGames) && $bannerGames->count() > 0)
+                @foreach($bannerGames as $game)
+                    <div class="swiper-slide">
+                        <a target="_blank" class="item-banner" href="">
+                            <img class="object-fit-cover h-100 w-100 banner-image" alt="{{ $game->game_name }}" src="{{ $game->banner_url ? asset($game->banner_url) : asset('assets/home/images/pattern-bg.png') }}" style="width: 100%; height: 300px; object-fit: cover;" data-url="{{ $game->banner_url }}" data-name="{{ $game->game_name }}">
+                        </a>
+                    </div>
+                @endforeach
+            @else
                 <div class="swiper-slide">
                     <a target="_blank" class="item-banner" href="">
                         <img class="object-fit-cover h-100 w-100 banner-image" alt="Banner" src="https://gamemobilestudio.cloud/images/pattern-bg.png" style="width: 100%; height: 300px; object-fit: cover;" data-url="" data-name="Banner">
                     </a>
                 </div>
-            @endforelse
+            @endif
         </div>
         <!-- Pagination -->
         <div class="swiper-pagination"></div>

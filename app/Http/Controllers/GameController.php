@@ -35,6 +35,7 @@ class GameController extends Controller
             'download_link' => 'nullable|url|max:255',
             'status_id' => 'required|string|max:100',
             'sort_order' => 'nullable|integer',
+            'download_count' => 'nullable|integer|min:0',
         ]);
 
         // Handle avatar upload
@@ -73,6 +74,7 @@ class GameController extends Controller
             'download_link' => 'nullable|url|max:255',
             'status_id' => 'required|string|max:100',
             'sort_order' => 'nullable|integer',
+            'download_count' => 'nullable|integer|min:0',
         ]);
 
         // Handle avatar upload
@@ -135,6 +137,8 @@ class GameController extends Controller
             'download_link' => $game->download_link,
             'status' => $game->status,
             'last_updated' => $game->last_updated,
+            'sort_order' => $game->sort_order,
+            'download_count' => $game->download_count ?? 0,
             'status_name' => $game->game_status ? strtoupper($game->game_status->status_name) : 'Không xác định',
         ]);
     }

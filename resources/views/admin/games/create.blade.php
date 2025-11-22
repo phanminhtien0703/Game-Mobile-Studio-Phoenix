@@ -114,6 +114,16 @@
                           @enderror
                         </div>
 
+                        <!-- Download Count (Read Only) -->
+                        <div class="mb-3">
+                          <label class="form-label" for="download_count">Lượt Tải</label>
+                          <input type="number" class="form-control @error('download_count') is-invalid @enderror" id="download_count" name="download_count" placeholder="Nhập lượt tải (mặc định: 0)" value="{{ old('download_count', 0) }}">
+                          <small class="form-text text-muted">Có thể thay đổi thủ công hoặc được cập nhật tự động khi người dùng tải game</small>
+                          @error('download_count')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                          @enderror
+                        </div>
+
                         <!-- Form Actions -->
                         <div class="mb-3">
                           <button type="submit" class="btn btn-primary">Tạo Game</button>

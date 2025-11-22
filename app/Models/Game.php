@@ -30,7 +30,8 @@ class Game extends Model
         'banner_url',
         'download_link',
         'status_id',
-        'sort_order'
+        'sort_order',
+        'download_count'
     ];
 
     protected $dates = [

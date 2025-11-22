@@ -29,6 +29,10 @@
     <div class="welfare">
         <div class="d-flex justify-content-between align-items-center mb-3 text-white">
             <h3 class="text-title">SỰ KIỆN</h3>
+            <a class="d-flex align-items-center gap-2" href="{{ route('home.events') }}" style="color: rgb(108, 114, 127);">
+                <span class="text-navigate" style="cursor: pointer;">Xem tất cả</span>
+                <img alt="" src="/icons/arrow.svg">
+            </a>
         </div>
         <div class="list-product-info" style="position: relative;">
             <div class="swiper swiper-initialized swiper-horizontal swiper-backface-hidden" id="promotionSwiper">

@@ -35,7 +35,7 @@
         </div>
         <div class="product_list">
             @forelse($recommendedGames as $game)
-            <a class="item game-item" href="/game/{{ $game->game_id }}">
+            <a class="item game-item" href="javascript:void(0);" onclick="recordGameDownload('{{ $game->game_id }}', '{{ $game->download_link }}')">
                 <div class="game-item-hot">HOT</div>
                 <div class="img"><img alt="{{ $game->game_name }}" src="{{ $game->avatar_url ? asset($game->avatar_url) : asset('home/images/loading.png') }}"></div>
                 <div class="desc">
@@ -58,3 +58,33 @@
                 </svg></span><span class="right"></span></div>
     </div>
 </div>
+
+<script>
+function recordGameDownload(gameId, downloadLink) {
+    // Gửi request đến API để ghi nhận lượt tải
+    fetch(`/api/games/${gameId}/download`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Chuyển hướng đến download link
+            window.location.href = downloadLink;
+        } else {
+            console.error('Error:', data.message);
+            // Vẫn chuyển hướng ngay cả khi có lỗi
+            window.location.href = downloadLink;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Vẫn chuyển hướng ngay cả khi có lỗi
+        window.location.href = downloadLink;
+    });
+}
+</script>

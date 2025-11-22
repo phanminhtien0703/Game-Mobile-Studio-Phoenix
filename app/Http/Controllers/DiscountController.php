@@ -114,4 +114,27 @@ class DiscountController extends Controller
             'created_at' => $discount->created_at,
         ]);
     }
+
+    // Lấy tất cả sự kiện đang diễn ra (end_date >= hôm nay)
+    public function listActive()
+    {
+        $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+        
+        // Lấy các sự kiện đang diễn ra
+        $events = Discount::where('end_date', '>=', $today)
+                          ->orderBy('start_date', 'desc')
+                          ->get();
+        
+        // Lấy banner games để hiển thị ở header
+        $bannerGames = Game::whereNotNull('banner_url')
+                           ->where('banner_url', '!=', '')
+                           ->limit(5)
+                           ->get();
+        
+        if ($bannerGames->isEmpty()) {
+            $bannerGames = Game::limit(5)->get();
+        }
+        
+        return view('home.event', compact('events', 'bannerGames'));
+    }
 }

@@ -24,6 +24,9 @@ use App\Http\Controllers\HomeController;
 // Redirect root to admin login
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+// Public routes - Event listing
+Route::get('/events', [DiscountController::class, 'listActive'])->name('home.events');
+
 // Admin Login Routes (không cần authentication)
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');

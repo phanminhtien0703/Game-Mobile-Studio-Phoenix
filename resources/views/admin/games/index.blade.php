@@ -22,31 +22,35 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Avatar</th>
-            <th>Tên game</th>
-            <th>Thể Loại</th>
-            <th>Trạng Thái</th>
-            <th>Thứ tự</th>
-            <th>Hành Động</th>
+            <th class="text-center">Avatar</th>
+            <th class="text-center">Tên game</th>
+            <th class="text-center">Thể Loại</th>
+            <th class="text-center">Trạng Thái</th>
+            <th class="text-center">Lượt Tải</th>
+            <th class="text-center">Thứ tự</th>
+            <th class="text-center">Hành Động</th>
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
           @forelse($games as $game)
           <tr>
-            <td>
+            <td class="text-center">
               <img src="{{ $game->avatar_url }}" alt="Avatar" class="rounded" style="width: 50px; height: 50px;" />
             </td>
-            <td>
+            <td class="text-center">
                           <span>{{ $game->game_name }}</span>
                         </td>
-                        <td>{{ $game->genre }}</td>
-                        <td>
+                        <td class="text-center">{{ $game->genre }}</td>
+                        <td class="text-center">
                           <span class="badge bg-label-info me-1">
                             {{ $game->game_status ? strtoupper($game->game_status->status_name) : 'Không xác định' }}
                           </span>
                         </td>
-                        <td>{{ $game->sort_order ?? 'N/A' }}</td>
-                        <td>
+                        <td class="text-center">
+                          <span class="badge bg-success">{{ number_format($game->download_count ?? 0) }}</span>
+                        </td>
+                        <td class="text-center">{{ $game->sort_order ?? 'N/A' }}</td>
+                        <td class="text-center">
                           <div class="btn-group" role="group">
                             <a href="javascript:void(0);" onclick="showGameDetails('{{ $game->game_id }}')" class="btn btn-info btn-sm">Xem</a>
                             <a href="{{ route('admin.games.edit', $game->game_id) }}" class="btn btn-warning btn-sm">Sửa</a>
@@ -60,7 +64,7 @@
                       </tr>
                       @empty
                       <tr>
-                        <td colspan="6" class="text-center py-4">
+                        <td colspan="7" class="text-center py-4">
                           <div class="text-muted">
                             <i class="bx bx-info-circle bx-sm mb-2"></i>
                             <p class="mb-0">Chưa có game nào.</p>
@@ -168,6 +172,14 @@
                                     <p><strong>Status Code:</strong> ${data.status || 'Chưa cập nhật'}</p>
                                     <p><strong>Ngày phát hành:</strong> ${data.release_date ? new Date(data.release_date).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
                                     <p><strong>Cập nhật lần cuối:</strong> ${data.last_updated ? new Date(data.last_updated).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <p><strong>Thứ tự:</strong> ${data.sort_order || 'N/A'}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Lượt tải:</strong> <span class="badge bg-success">${data.download_count ? data.download_count.toLocaleString('vi-VN') : 0}</span></p>
                                 </div>
                             </div>
                             <hr />
