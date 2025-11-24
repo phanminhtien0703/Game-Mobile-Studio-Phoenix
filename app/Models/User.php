@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     protected $primaryKey = 'user_id';
     public $timestamps = false;
@@ -19,6 +20,16 @@ class User extends Model
         'last_activity',
         'last_ip'
     ];
+
+    protected $hidden = [
+        'password_hash',
+    ];
+
+    // Override getAuthPassword để sử dụng password_hash
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
 
     // Relationship với activities
     public function activities()

@@ -25,4 +25,20 @@
         </svg>
         <span>Giftcode</span>
     </a>
+    <a class="item" href="/shop">
+        <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+            <path d="M18.5 2C9.9 2 2.8 9.1 2.8 17.7C2.8 26.3 9.9 33.4 18.5 33.4C27.1 33.4 34.2 26.3 34.2 17.7C34.2 9.1 27.1 2 18.5 2ZM18.5 30.6C11.6 30.6 5.6 24.6 5.6 17.7C5.6 10.8 11.6 4.8 18.5 4.8C25.4 4.8 31.4 10.8 31.4 17.7C31.4 24.6 25.4 30.6 18.5 30.6Z" fill="#B366FF"></path>
+            <path d="M18.5 8.5C17.1 8.5 16 9.6 16 11C16 12.4 17.1 13.5 18.5 13.5C19.9 13.5 21 12.4 21 11C21 9.6 19.9 8.5 18.5 8.5Z" fill="#B366FF"></path>
+            <path d="M22.5 23.5H17.5V20H16V25H23V20H21.5V23.5H22.5Z" fill="#B366FF"></path>
+            <path d="M10 17C11.1 17 12 16.1 12 15C12 13.9 11.1 13 10 13C8.9 13 8 13.9 8 15C8 16.1 8.9 17 10 17Z" fill="#B366FF"></path>
+            <path d="M27 17C28.1 17 29 16.1 29 15C29 13.9 28.1 13 27 13C25.9 13 25 13.9 25 15C25 16.1 25.9 17 27 17Z" fill="#B366FF"></path>
+            <defs>
+                <linearGradient id="paint0_marketplace" x1="2.8" y1="2" x2="34.2" y2="33.4" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#B366FF"></stop>
+                    <stop offset="1" stop-color="#7B3FF2"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
+        <span>Mua Bán</span>
+    </a>
 </div>

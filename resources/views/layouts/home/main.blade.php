@@ -61,6 +61,27 @@
                     </svg>
                 </div>
             </div>
+            
+            <!-- User Info / Login Button -->
+            <div style="display: flex; align-items: center; gap: 15px;">
+                @if(auth()->check())
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="text-align: right;">
+                            <div style="font-size: 14px; color: #333; font-weight: 600;">{{ auth()->user()->username }}</div>
+                            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" style="background: none; border: none; color: #3366FF; font-size: 12px; cursor: pointer; text-decoration: underline;">
+                                    Đăng xuất
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" style="background: linear-gradient(135deg, #3366FF 0%, #0047AB 100%); color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-block; white-space: nowrap;">
+                        Đăng Nhập
+                    </a>
+                @endif
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -88,6 +109,68 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <script>
+        // AJAX Navigation Handler
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[data-ajax]');
+            if (!link) return;
+
+            e.preventDefault();
+            const url = link.getAttribute('href');
+            
+            // Load content via AJAX
+            fetch(url, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Find content container and update only that
+                const contentDiv = document.querySelector('.vplay-content');
+                
+                // Create temporary wrapper to extract scripts
+                const temp = document.createElement('div');
+                temp.innerHTML = data.content;
+                
+                // Get all scripts from new content
+                const scripts = temp.querySelectorAll('script');
+                
+                // Update only the content part (after banner and menu)
+                const contentTarget = contentDiv.querySelector('[data-ajax-target], .vplay-content > *:last-child') 
+                    || contentDiv;
+                
+                // Replace only the dynamic content, not header/menu
+                const mainContent = contentDiv.querySelector('div[style*="min-height"]') 
+                    || Array.from(contentDiv.children).find(el => 
+                        el.style.padding === '20px' || el.className.includes('welfare') || el.className.includes('flex')
+                    );
+                
+                if (mainContent) {
+                    mainContent.parentNode.replaceChild(temp.firstChild, mainContent);
+                } else {
+                    contentDiv.innerHTML = data.content;
+                }
+                
+                // Execute scripts from new content
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    contentDiv.appendChild(newScript);
+                });
+                
+                // Dispatch custom event for carousels to reinitialize
+                document.dispatchEvent(new Event('ajaxContentLoaded'));
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            })
+            .catch(error => {
+                console.error('Error loading content:', error);
+                window.location.href = url; // Fallback to regular navigation
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             // Open external links in appropriate app
             document.querySelectorAll("a[href^='http']").forEach(function(link) {

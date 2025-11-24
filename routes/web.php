@@ -9,6 +9,9 @@ use App\Http\Controllers\TouristController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\GiftcodeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +29,23 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // Public routes - Event listing
 Route::get('/events', [DiscountController::class, 'listActive'])->name('home.events');
+
+// Shop routes
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
+Route::get('/shop/create', [ShopController::class, 'create'])->middleware('auth')->name('shop.create');
+Route::post('/shop', [ShopController::class, 'store'])->middleware('auth')->name('shop.store');
+
+// Message routes
+Route::get('/message/buy', [MessageController::class, 'buyAccount'])->middleware('auth')->name('message.buy');
+Route::post('/message/send', [MessageController::class, 'sendMessage'])->middleware('auth')->name('message.send');
+
+// User Auth routes
+Route::get('/login', [UserController::class, 'showLogin'])->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login.post');
+Route::get('/register', [UserController::class, 'showRegister'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('register.post');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 // Admin Login Routes (không cần authentication)
 Route::prefix('admin')->group(function () {
