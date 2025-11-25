@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Helpers\BannerHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,9 @@ class UserController extends Controller
         if (auth()->check()) {
             return redirect()->route('home.index');
         }
-        return view('users.login');
+
+        $bannerGames = BannerHelper::getBannerGames();
+        return view('users.login', compact('bannerGames'));
     }
 
     public function login(Request $request)
@@ -53,7 +56,9 @@ class UserController extends Controller
         if (auth()->check()) {
             return redirect()->route('home.index');
         }
-        return view('users.register');
+
+        $bannerGames = BannerHelper::getBannerGames();
+        return view('users.register', compact('bannerGames'));
     }
 
     public function register(Request $request)

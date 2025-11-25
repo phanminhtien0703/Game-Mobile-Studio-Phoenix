@@ -11,9 +11,24 @@
         height: 300px;
         object-fit: cover;
     }
+
+    .swiper-pagination-bullet {
+        background: rgba(255, 255, 255, 0.5);
+        width: 10px;
+        height: 10px;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: rgba(255, 255, 255, 1);
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: rgba(255, 255, 255, 0.8);
+    }
 </style>
 
-<section class="wrapper-slider" data-games="{{ base64_encode(serialize($bannerGames ?? [])) }}">
+<section class="wrapper-slider">
     <h1 style="position: absolute; left: -9999px;">Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu</h1>
     <div class="swiper" id="bannerSwiper">
         <div class="swiper-wrapper">
@@ -21,14 +36,20 @@
                 @foreach($bannerGames as $game)
                     <div class="swiper-slide">
                         <a target="_blank" class="item-banner" href="">
-                            <img class="object-fit-cover h-100 w-100 banner-image" alt="{{ $game->game_name }}" src="{{ $game->banner_url ? asset($game->banner_url) : asset('assets/home/images/pattern-bg.png') }}" style="width: 100%; height: 300px; object-fit: cover;" data-url="{{ $game->banner_url }}" data-name="{{ $game->game_name }}">
+                            <img class="banner-image" 
+                                 alt="{{ $game->game_name }}" 
+                                 src="{{ $game->banner_url ? asset($game->banner_url) : 'https://gamemobilestudio.cloud/images/pattern-bg.png' }}" 
+                                 style="width: 100%; height: 300px; object-fit: cover; display: block;">
                         </a>
                     </div>
                 @endforeach
             @else
                 <div class="swiper-slide">
                     <a target="_blank" class="item-banner" href="">
-                        <img class="object-fit-cover h-100 w-100 banner-image" alt="Banner" src="https://gamemobilestudio.cloud/images/pattern-bg.png" style="width: 100%; height: 300px; object-fit: cover;" data-url="" data-name="Banner">
+                        <img class="banner-image" 
+                             alt="Banner" 
+                             src="https://gamemobilestudio.cloud/images/pattern-bg.png" 
+                             style="width: 100%; height: 300px; object-fit: cover; display: block;">
                     </a>
                 </div>
             @endif
@@ -43,50 +64,13 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const sliderSection = document.querySelector('.wrapper-slider');
-    const allImages = document.querySelectorAll('.banner-image');
-    const swiperWrapper = document.querySelector('.swiper-wrapper');
-    let currentIndex = 0;
-    
-    // Hàm cập nhật banner
-    function updateBanner() {
-        if (allImages.length === 0) return;
-        
-        const currentImg = allImages[currentIndex];
-        const bannerUrl = currentImg.getAttribute('data-url');
-        const gameName = currentImg.getAttribute('data-name');
-        
-        let imgUrl;
-        if (bannerUrl) {
-            const basePath = '{{ asset("") }}';
-            imgUrl = basePath + bannerUrl;
-        } else {
-            imgUrl = 'https://gamemobilestudio.cloud/images/pattern-bg.png';
-        }
-        
-        // Cập nhật tất cả img trong carousel
-        allImages.forEach(img => {
-            img.src = imgUrl;
-            img.alt = gameName || 'Banner';
-        });
-        
-        // Chuyển sang game tiếp theo
-        currentIndex = (currentIndex + 1) % allImages.length;
-    }
-    
-    // Cập nhật banner lần đầu
-    updateBanner();
-    
-    // Tự động cập nhật mỗi 5 giây
-    setInterval(updateBanner, 5000);
-    
-    // Khởi tạo Swiper
     const swiper = new Swiper('#bannerSwiper', {
         slidesPerView: 1,
-        spaceBetween: 30,
+        spaceBetween: 0,
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
+            dynamicBullets: true,
         },
         navigation: {
             nextEl: '.swiper-button-next',
@@ -94,7 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         autoplay: {
             delay: 5000,
+            disableOnInteraction: false,
         },
+        loop: true,
     });
 });
 </script>

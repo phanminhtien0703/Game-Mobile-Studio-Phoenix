@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\AccountForSale;
+use App\Helpers\BannerHelper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,21 +13,13 @@ class ShopController extends Controller
 {
     public function index()
     {
-        // Lấy các game có banner để hiển thị trên carousel
-        $bannerGames = Game::whereNotNull('banner_url')
-                           ->where('banner_url', '!=', '')
-                           ->limit(5)
-                           ->get();
-        
-        // Nếu không có banner game, lấy tất cả game làm fallback
-        if ($bannerGames->isEmpty()) {
-            $bannerGames = Game::limit(5)->get();
-        }
+        // Lấy các game banner
+        $bannerGames = BannerHelper::getBannerGames();
 
-        // Lấy các tài khoản bán được phê duyệt
+        // Lấy các tài khoản bán được phê duyệt - pagination 5 per page
         $accounts = AccountForSale::with('user', 'game')
                                   ->orderBy('created_at', 'desc')
-                                  ->get();
+                                  ->paginate(5);
 
         // Nếu là AJAX request, return chỉ content view
         if (request()->wantsJson()) {
@@ -45,16 +38,17 @@ class ShopController extends Controller
             return redirect()->route('home.index')->with('error', 'Bạn cần đăng nhập để đăng bán');
         }
 
-        $bannerGames = Game::whereNotNull('banner_url')
-                           ->where('banner_url', '!=', '')
-                           ->limit(5)
-                           ->get();
-        
-        if ($bannerGames->isEmpty()) {
-            $bannerGames = Game::limit(5)->get();
+        $bannerGames = BannerHelper::getBannerGames();
+        $games = Game::select('game_id', 'game_name')->get();
+
+        // Nếu là AJAX request, return chỉ content view
+        if (request()->wantsJson()) {
+            $html = view('shop.create', compact('games', 'bannerGames'))->render();
+            return response()->json([
+                'content' => $html
+            ]);
         }
 
-        $games = Game::select('game_id', 'game_name')->get();
         return view('shop.create', compact('games', 'bannerGames'));
     }
 
@@ -107,6 +101,7 @@ class ShopController extends Controller
             'description' => $validated['description'],
             'images' => $imagePaths,
             'status' => 'pending',
+            'views' => 0,
         ]);
 
         return redirect()->route('shop.index')
@@ -121,14 +116,7 @@ class ShopController extends Controller
         $account->increment('views');
 
         // Lấy banner games
-        $bannerGames = Game::whereNotNull('banner_url')
-                           ->where('banner_url', '!=', '')
-                           ->limit(5)
-                           ->get();
-        
-        if ($bannerGames->isEmpty()) {
-            $bannerGames = Game::limit(5)->get();
-        }
+        $bannerGames = BannerHelper::getBannerGames();
 
         // Nếu là AJAX request, return chỉ content view
         if (request()->wantsJson()) {

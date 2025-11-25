@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Discount;
 use App\Models\Game;
+use App\Helpers\BannerHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -125,15 +126,8 @@ class DiscountController extends Controller
                           ->orderBy('start_date', 'desc')
                           ->get();
         
-        // Lấy banner games để hiển thị ở header
-        $bannerGames = Game::whereNotNull('banner_url')
-                           ->where('banner_url', '!=', '')
-                           ->limit(5)
-                           ->get();
-        
-        if ($bannerGames->isEmpty()) {
-            $bannerGames = Game::limit(5)->get();
-        }
+        // Lấy banner games
+        $bannerGames = BannerHelper::getBannerGames();
         
         return view('home.event', compact('events', 'bannerGames'));
     }

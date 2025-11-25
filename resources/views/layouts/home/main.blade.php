@@ -109,7 +109,52 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <script>
-        // AJAX Navigation Handler
+        // Internal Navigation Handler - navigate to internal links in same tab
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            // Check for special cases to skip
+            if (link.getAttribute('data-ajax') ||
+                link.hasAttribute('target') ||
+                link.hasAttribute('download') ||
+                e.ctrlKey || 
+                e.metaKey || 
+                e.button === 1) {
+                return; // Let default behavior handle it
+            }
+
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('javascript:')) {
+                return;
+            }
+
+            // Handle relative links
+            if (href.startsWith('/') || href.startsWith('.')) {
+                e.preventDefault();
+                window.location.href = href;
+                return;
+            }
+
+            // Handle absolute URLs from same domain
+            if (href.startsWith('http')) {
+                try {
+                    const url = new URL(href);
+                    const currentUrl = new URL(window.location.href);
+                    
+                    // If same domain and protocol, navigate in same tab
+                    if (url.hostname === currentUrl.hostname && 
+                        url.protocol === currentUrl.protocol) {
+                        e.preventDefault();
+                        window.location.href = url.pathname + url.search + url.hash;
+                    }
+                } catch (err) {
+                    // Invalid URL, let default behavior handle it
+                }
+            }
+        });
+
+        // AJAX Navigation Handler - only for data-ajax links
         document.addEventListener('click', function(e) {
             const link = e.target.closest('a[data-ajax]');
             if (!link) return;
@@ -166,28 +211,36 @@
                 window.scrollTo(0, 0);
             })
             .catch(error => {
-                console.error('Error loading content:', error);
+                console.error('Error loading content via AJAX:', error);
                 window.location.href = url; // Fallback to regular navigation
             });
         });
 
         document.addEventListener("DOMContentLoaded", function() {
+            // Get current domain
+            const currentDomain = window.location.hostname;
+            
             // Open external links in appropriate app
             document.querySelectorAll("a[href^='http']").forEach(function(link) {
-                link.addEventListener("click", function(e) {
-                    var url = link.getAttribute("href");
-                    if (/Android/i.test(navigator.userAgent)) {
-                        // Android -> mở bằng Chrome
-                        window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end;";
-                    } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                        // iOS -> mở Safari
-                        window.open(url, "_system");
-                    } else {
-                        // Máy khác mở bình thường
-                        window.open(url, "_blank");
-                    }
-                    e.preventDefault();
-                });
+                const linkUrl = new URL(link.getAttribute('href'), window.location.href);
+                
+                // Only treat as external if domain is different
+                if (linkUrl.hostname !== currentDomain) {
+                    link.addEventListener("click", function(e) {
+                        var url = link.getAttribute("href");
+                        if (/Android/i.test(navigator.userAgent)) {
+                            // Android -> mở bằng Chrome
+                            window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end;";
+                        } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            // iOS -> mở Safari
+                            window.open(url, "_system");
+                        } else {
+                            // Máy khác mở bình thường
+                            window.open(url, "_blank");
+                        }
+                        e.preventDefault();
+                    });
+                }
             });
         });
     </script>

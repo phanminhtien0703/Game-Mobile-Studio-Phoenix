@@ -1,6 +1,7 @@
 @extends('layouts.home.main')
 
 @section('content')
+
 <div style="min-height: 600px; display: flex; align-items: center; justify-content: center; padding: 20px;">
     <div style="width: 100%; max-width: 450px;">
         <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
@@ -55,4 +56,30 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginBannerSwiper = document.getElementById('loginBannerSwiper');
+    if (loginBannerSwiper) {
+        const swiper = new Swiper('#loginBannerSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+        });
+    }
+});
+</script>
 @endsection

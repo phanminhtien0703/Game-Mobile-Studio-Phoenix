@@ -4,7 +4,7 @@
 <div class="d-flex flex-column gap-5 mt-5" style="margin: 0px 12px;">
     <div class="welfare">
         <div class="d-flex justify-content-between align-items-center mb-3 text-white">
-            <h3 class="text-title">SHOP - MUA BÁN TÀI KHOẢN</h3>
+            <h3 class="text-title">MUA BÁN TÀI KHOẢN</h3>
             @if(auth()->check())
             <a href="{{ route('shop.create') }}" style="background: linear-gradient(135deg, #3366FF 0%, #0047AB 100%); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">
                 + Đăng Bán
@@ -94,6 +94,11 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin-top: 30px;">
+                {{ $accounts->links() }}
             </div>
         @endif
     </div>

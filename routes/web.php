@@ -32,8 +32,8 @@ Route::get('/events', [DiscountController::class, 'listActive'])->name('home.eve
 
 // Shop routes
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 Route::get('/shop/create', [ShopController::class, 'create'])->middleware('auth')->name('shop.create');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->where('id', '[0-9]+')->name('shop.show');
 Route::post('/shop', [ShopController::class, 'store'])->middleware('auth')->name('shop.store');
 
 // Message routes

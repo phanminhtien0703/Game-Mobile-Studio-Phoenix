@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Discount;
 use App\Models\Giftcode;
+use App\Helpers\BannerHelper;
 
 class HomeController extends Controller
 {
@@ -16,16 +17,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Lấy các game có banner để hiển thị trên carousel (tất cả game có banner, không phân biệt status)
-        $bannerGames = Game::whereNotNull('banner_url')
-                           ->where('banner_url', '!=', '')
-                           ->limit(5)
-                           ->get();
-        
-        // Nếu không có banner game, lấy tất cả game làm fallback
-        if ($bannerGames->isEmpty()) {
-            $bannerGames = Game::limit(5)->get();
-        }
+        // Lấy các game banner
+        $bannerGames = BannerHelper::getBannerGames();
         
         // Lấy các game đề xuất (tất cả games, limit 7, sắp xếp theo sort_order)
         $recommendedGames = Game::with('game_status')
