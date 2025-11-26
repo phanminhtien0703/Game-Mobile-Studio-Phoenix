@@ -90,6 +90,31 @@
       </ul>
     </li>
 
+
+
+    <!-- Quản lý Người Dùng -->
+    <li class="menu-item {{ request()->routeIs('admin.users.*') ? 'active open' : '' }}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div class="text-truncate" data-i18n="Quản lý User">Quản lý User</div>
+      </a>
+
+      <ul class="menu-sub">
+        <li class="menu-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.users.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-list-ul"></i>
+            <div class="text-truncate" data-i18n="Danh sách User">Danh sách User</div>
+          </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('admin.users.create') ? 'active' : '' }}">
+          <a href="{{ route('admin.users.create') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+            <div class="text-truncate" data-i18n="Thêm User Mới">Thêm User mới</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <!-- Quản lý Khuyến Mãi -->
     <li class="menu-item {{ request()->routeIs('admin.discounts.*') ? 'active open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">

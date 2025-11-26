@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,10 @@ Route::prefix('admin')->middleware(['admin.auth'])->group(function () {
     // Game routes
     Route::resource('games', GameController::class)->names('admin.games');
     Route::get('/games/{game_id}', [GameController::class, 'show'])->name('admin.games.show')->where('game_id', '.*');
+
+    // User routes
+    Route::resource('users', AdminUserController::class)->names('admin.users');
+    Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('admin.users.show');
 
     // Discount routes
     Route::resource('discounts', DiscountController::class)->names('admin.discounts');
