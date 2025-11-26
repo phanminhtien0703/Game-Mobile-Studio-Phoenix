@@ -19,7 +19,10 @@
                         <h2>{{ $giftcode->game->game_name ?? 'Không có tên' }}</h2>
                         <p>Giftcode: {{ $giftcode->total_quantity }}</p>
                         <p>Người nhận: {{ $giftcode->used_quantity }}</p>
-                        <button class="btn giftcode-btn" data-message="{{ $giftcode->message }}" type="button">Nhận code</button>
+                        <button class="btn giftcode-btn" 
+                                data-giftcode-id="{{ $giftcode->giftcode_id }}" 
+                                data-message="{{ $giftcode->message }}" 
+                                type="button">Nhận code</button>
                     </div>
                 </a>
             </div>
@@ -40,9 +43,36 @@
         giftcodeBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
+                const giftcodeId = this.getAttribute('data-giftcode-id');
                 const msg = this.getAttribute('data-message');
-                const messengerUrl = `https://m.me/${page}?text=${encodeURIComponent(msg)}`;
-                window.open(messengerUrl, '_blank');
+                
+                // Gửi AJAX request để cập nhật số lượng giftcode đã nhận
+                fetch(`/admin/giftcodes/${giftcodeId}/claim`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật số lượng đã nhận trên UI
+                        const detailDiv = this.closest('.item').querySelector('.detail');
+                        const usedQuantityText = detailDiv.querySelectorAll('p')[1];
+                        usedQuantityText.textContent = `Người nhận: ${data.used_quantity}`;
+                        
+                        // Mở Messenger
+                        const messengerUrl = `https://m.me/${page}?text=${encodeURIComponent(msg)}`;
+                        window.open(messengerUrl, '_blank');
+                    } else {
+                        alert(data.message || 'Lỗi khi nhận giftcode');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Lỗi khi nhận giftcode');
+                });
             });
         });
     });

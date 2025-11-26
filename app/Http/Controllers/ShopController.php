@@ -17,7 +17,8 @@ class ShopController extends Controller
         $bannerGames = BannerHelper::getBannerGames();
 
         // Lấy các tài khoản bán được phê duyệt - pagination 5 per page
-        $accounts = AccountForSale::with('user', 'game')
+        $accounts = AccountForSale::approved()
+                                  ->with('user', 'game')
                                   ->orderBy('created_at', 'desc')
                                   ->paginate(5);
 
@@ -92,6 +93,9 @@ class ShopController extends Controller
             }
         }
 
+        // Get game name
+        $game = Game::find($validated['game_id']);
+
         AccountForSale::create([
             'user_id' => Auth::id(),
             'game_id' => $validated['game_id'],
@@ -104,8 +108,15 @@ class ShopController extends Controller
             'views' => 0,
         ]);
 
-        return redirect()->route('shop.index')
-                       ->with('success', 'Tài khoản được thêm thành công. Chờ quản trị viên phê duyệt.');
+        return redirect()->route('shop.create')
+                       ->with([
+                           'success_pending' => 'Đăng bán thành công! Vui lòng chờ admin duyệt.',
+                           'account_data' => [
+                               'character_name' => $validated['character_name'],
+                               'server_name' => $validated['server_name'],
+                               'game_name' => $game ? $game->game_name : 'N/A'
+                           ]
+                       ]);
     }
 
     public function show($id)

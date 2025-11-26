@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <td><strong>Giá:</strong></td>
-                            <td>{{ number_format($account->price) }} đ</td>
+                            <td>{{ number_format($account->price, 0, ',', ',') }} đ</td>
                         </tr>
                         <tr>
                             <td><strong>Mô Tả:</strong></td>

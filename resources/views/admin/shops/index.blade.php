@@ -41,7 +41,7 @@
             <td class="text-center">{{ $account->server_name }}</td>
             <td class="text-center">{{ $account->user->username ?? 'N/A' }}</td>
             <td class="text-center">
-              <span>{{ number_format($account->price) }} đ</span>
+              <span>{{ number_format($account->price, 0, ',', ',') }} đ</span>
             </td>
             <td class="text-center">
               <span class="badge 
@@ -162,7 +162,7 @@
     function showAccountDetails(accountId) {
         console.log("account_id = " + accountId);
         // Gửi yêu cầu AJAX để lấy dữ liệu chi tiết tài khoản
-        fetch(`/admin/shops/${accountId}`)
+        fetch(`/admin/shops/${accountId}/json`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -183,7 +183,7 @@
                 document.getElementById('accountModalBody').innerHTML = `
                     <div class="row">
                         <div class="col-md-12">
-                            <h5 class="mb-3">${data.character_name}</h5>
+                            <h5 class="mb-3 text-center"><strong>Tên nhân vật:</strong> ${data.character_name}</h5>
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <p><strong>ID:</strong> ${data.id}</p>
@@ -192,13 +192,13 @@
                                 </div>
                                 <div class="col-6">
                                     <p><strong>Người Bán:</strong> ${data.seller_username || 'Chưa cập nhật'}</p>
-                                    <p><strong>Giá:</strong> <span class="badge bg-success">${data.price ? data.price.toLocaleString('vi-VN') + ' đ' : '0 đ'}</span></p>
+                                    <p><strong>Giá:</strong> <span>${data.price ? new Intl.NumberFormat('vi-VN').format(data.price) + ' đ' : '0 đ'}</span></p>
                                     <p><strong>Trạng Thái:</strong> <span class="badge ${data.status === 'approved' ? 'bg-success' : (data.status === 'pending' ? 'bg-warning' : (data.status === 'sold' ? 'bg-secondary' : 'bg-danger'))}">${data.status}</span></p>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <p><strong>Lượt Xem:</strong> <span class="badge bg-info">${data.views || 0}</span></p>
+                                    <p><strong>Lượt Xem:</strong> <span>${data.views || 0}</span></p>
                                 </div>
                                 <div class="col-6">
                                     <p><strong>Ngày Tạo:</strong> ${data.created_at || 'Chưa cập nhật'}</p>

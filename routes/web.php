@@ -83,6 +83,7 @@ Route::prefix('admin')->middleware(['admin.auth'])->group(function () {
     // Giftcode routes
     Route::resource('giftcodes', GiftcodeController::class)->names('admin.giftcodes');
     Route::get('/giftcodes/{giftcode_id}', [GiftcodeController::class, 'show'])->name('admin.giftcodes.show');
+    Route::post('/giftcodes/{giftcode_id}/claim', [GiftcodeController::class, 'claimGiftcode'])->name('giftcodes.claim');
 
     // Activity routes
     Route::get('/activities', [ActivityController::class, 'index'])->name('admin.activities.index');

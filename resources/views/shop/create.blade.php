@@ -17,6 +17,30 @@
         </div>
         @endif
 
+        <!-- Success Modal -->
+        @if(session('success_pending'))
+        @php
+            $accountData = session('account_data', []);
+        @endphp
+        <div id="successModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
+                <h2 style="color: #333; margin-bottom: 15px; font-size: 22px;">{{ session('success_pending') }}</h2>
+                <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                    Tài khoản của bạn đã được gửi để duyệt.<br>
+                    Admin sẽ xem xét phê duyệt và hỗ trợ trung gian khi giao dịch.
+                </p>
+                <button id="okBtn" 
+                        data-character-name="{{ $accountData['character_name'] ?? '' }}"
+                        data-server-name="{{ $accountData['server_name'] ?? '' }}"
+                        data-game-name="{{ $accountData['game_name'] ?? '' }}"
+                        style="background: linear-gradient(135deg, #3366FF 0%, #0047AB 100%); color: white; padding: 12px 40px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 16px;">
+                    OK
+                </button>
+            </div>
+        </div>
+        @endif
+
         <form action="{{ route('shop.store') }}" method="POST" enctype="multipart/form-data" style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             @csrf
 
@@ -107,6 +131,27 @@
 </div>
 
 <script>
+// Handle OK button click - Send message to Messenger
+document.addEventListener('DOMContentLoaded', function() {
+    const okBtn = document.getElementById('okBtn');
+    if (okBtn) {
+        okBtn.addEventListener('click', function() {
+            const characterName = this.getAttribute('data-character-name');
+            const serverName = this.getAttribute('data-server-name');
+            const gameName = this.getAttribute('data-game-name');
+            
+            // Compose the message
+            const message = `Chào admin tôi có đăng bán account\nTên nhân vật: ${characterName} - ${serverName}\n${gameName} ở trang Game Mobile Studio\nMong admin duyệt và hỗ trợ làm trung gian giao dịch giúp tôi`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Open Messenger with pre-filled message
+            window.open(`https://m.me/game.mobile.studio.phoenix?text=${encodedMessage}`, '_blank');
+        });
+    }
+});
+
 function previewImages(input) {
     const container = document.getElementById('previewContainer');
     container.innerHTML = '';

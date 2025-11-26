@@ -105,4 +105,32 @@ class GiftcodeController extends Controller
             'updated_at' => $giftcode->updated_at,
         ]);
     }
+
+    // Tăng số lượng giftcode đã nhận
+    public function claimGiftcode($giftcode_id)
+    {
+        $giftcode = Giftcode::find($giftcode_id);
+
+        if (!$giftcode) {
+            return response()->json(['error' => 'Giftcode not found'], 404);
+        }
+
+        // Kiểm tra xem còn giftcode để nhận không
+        if ($giftcode->used_quantity >= $giftcode->total_quantity) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Giftcode đã hết!'
+            ], 400);
+        }
+
+        // Tăng số lượng đã nhận lên 1
+        $giftcode->increment('used_quantity');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Nhận giftcode thành công!',
+            'used_quantity' => $giftcode->used_quantity,
+            'remaining_quantity' => $giftcode->total_quantity - $giftcode->used_quantity
+        ]);
+    }
 }
