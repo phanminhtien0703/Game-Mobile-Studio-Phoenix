@@ -51,15 +51,19 @@
                         </td>
                         <td class="text-center">{{ $game->sort_order ?? 'N/A' }}</td>
                         <td class="text-center">
-                          <div class="btn-group" role="group">
-                            <a href="javascript:void(0);" onclick="showGameDetails('{{ $game->game_id }}')" class="btn btn-info btn-sm">Xem</a>
-                            <a href="{{ route('admin.games.edit', $game->game_id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{ route('admin.games.destroy', $game->game_id) }}" method="POST" style="display:inline;">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xoá game này?')">Xoá</button>
-                            </form>
-                          </div>
+                          <a href="javascript:void(0);" onclick="showGameDetails('{{ $game->game_id }}')" class="btn btn-info btn-sm" title="Xem chi tiết">
+                            <i class="bx bx-show"></i>
+                          </a>
+                          <a href="{{ route('admin.games.edit', $game->game_id) }}" class="btn btn-warning btn-sm" title="Chỉnh sửa">
+                            <i class="bx bx-edit"></i>
+                          </a>
+                          <form action="{{ route('admin.games.destroy', $game->game_id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" title="Xóa" onclick="return confirm('Bạn chắc chứ?')">
+                              <i class="bx bx-trash"></i>
+                            </button>
+                          </form>
                         </td>
                       </tr>
                       @empty

@@ -21,7 +21,7 @@
     <div class="table-responsive text-nowrap">
       <table class="table">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th>ID</th>
             <th>Banner</th>
             <th>Tên Sự Kiện</th>
@@ -31,7 +31,7 @@
             <th>Hành Động</th>
           </tr>
         </thead>
-        <tbody class="table-border-bottom-0">
+        <tbody class="table-border-bottom-0 text-center">
           @forelse($discounts as $discount)
           <tr>
             <td>{{ $discount->discount_id }}</td>
@@ -78,15 +78,19 @@
               <span class="badge {{ $badgeClass }}">{{ $status }}</span>
             </td>
             <td>
-              <div class="btn-group" role="group">
-                <a href="javascript:void(0);" onclick="showDiscountDetails('{{ $discount->discount_id }}')" class="btn btn-info btn-sm">Xem</a>
-                <a href="{{ route('admin.discounts.edit', $discount->discount_id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                <form action="{{ route('admin.discounts.destroy', $discount->discount_id) }}" method="POST" style="display:inline;">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xoá sự kiện này?')">Xoá</button>
-                </form>
-              </div>
+              <a href="javascript:void(0);" onclick="showDiscountDetails('{{ $discount->discount_id }}')" class="btn btn-info btn-sm" title="Xem chi tiết">
+                <i class="bx bx-show"></i>
+              </a>
+              <a href="{{ route('admin.discounts.edit', $discount->discount_id) }}" class="btn btn-warning btn-sm" title="Chỉnh sửa">
+                <i class="bx bx-edit"></i>
+              </a>
+              <form action="{{ route('admin.discounts.destroy', $discount->discount_id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm" title="Xóa" onclick="return confirm('Bạn chắc chứ?')">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </form>
             </td>
           </tr>
           @empty
@@ -214,4 +218,3 @@
     }
 </script>
 @endpush
-

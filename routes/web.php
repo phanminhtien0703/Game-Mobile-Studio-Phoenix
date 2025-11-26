@@ -13,6 +13,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,11 @@ Route::prefix('admin')->middleware(['admin.auth'])->group(function () {
     // User routes
     Route::resource('users', AdminUserController::class)->names('admin.users');
     Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('admin.users.show');
+
+    // Shop routes
+    Route::resource('shops', AdminShopController::class)->names('admin.shops');
+    Route::get('/shops/{shop}', [AdminShopController::class, 'show'])->name('admin.shops.show');
+    Route::get('/shops/{shop}/json', [AdminShopController::class, 'getJson'])->name('admin.shops.json');
 
     // Discount routes
     Route::resource('discounts', DiscountController::class)->names('admin.discounts');

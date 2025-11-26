@@ -14,7 +14,7 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = Discount::with('game')->orderBy('created_at', 'desc')->get();
-        return view('admin.discounts', compact('discounts'));
+        return view('admin.discounts.index', compact('discounts'));
     }
 
     public function create()

@@ -115,6 +115,29 @@
       </ul>
     </li>
 
+    <!-- Quản lý Tài Khoản Bán -->
+    <li class="menu-item {{ request()->routeIs('admin.shops.*') ? 'active open' : '' }}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-store"></i>
+        <div class="text-truncate" data-i18n="Quản lý Shop">Quản lý Shop</div>
+      </a>
+
+      <ul class="menu-sub">
+        <li class="menu-item {{ request()->routeIs('admin.shops.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.shops.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-list-ul"></i>
+            <div class="text-truncate" data-i18n="Danh sách Tài Khoản">Danh sách Tài Khoản</div>
+          </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('admin.shops.create') ? 'active' : '' }}">
+          <a href="{{ route('admin.shops.create') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+            <div class="text-truncate" data-i18n="Thêm Tài Khoản Mới">Thêm Tài Khoản mới</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <!-- Quản lý Khuyến Mãi -->
     <li class="menu-item {{ request()->routeIs('admin.discounts.*') ? 'active open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
