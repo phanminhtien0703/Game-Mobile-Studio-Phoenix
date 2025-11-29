@@ -35,7 +35,7 @@
             @if(isset($bannerGames) && $bannerGames->count() > 0)
                 @foreach($bannerGames as $game)
                     <div class="swiper-slide">
-                        <a target="_blank" class="item-banner" href="">
+                        <a target="_blank" class="item-banner" href="{{ $game->download_link ?? ($game->fanpage_support ?? '#') }}">
                             <img class="banner-image" 
                                  alt="{{ $game->game_name }}" 
                                  src="{{ $game->banner_url ? asset($game->banner_url) : 'https://gamemobilestudio.cloud/images/pattern-bg.png' }}" 
@@ -45,7 +45,7 @@
                 @endforeach
             @else
                 <div class="swiper-slide">
-                    <a target="_blank" class="item-banner" href="">
+                    <a target="_blank" class="item-banner" href="#">
                         <img class="banner-image" 
                              alt="Banner" 
                              src="https://gamemobilestudio.cloud/images/pattern-bg.png" 

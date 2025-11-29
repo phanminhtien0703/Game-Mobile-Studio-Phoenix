@@ -118,10 +118,10 @@
                        style="display: inline-block; padding: 12px; background: linear-gradient(135deg, #0084FF 0%, #0063E1 100%); color: white; text-align: center; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 15px; cursor: pointer;">
                         💬 Liên Hệ Qua Messenger
                     </a>
-                    <button onclick="history.back()" 
+                    <a href="{{ route('shop.index') }}" data-ajax
                        style="display: inline-block; padding: 12px; background: #e0e0e0; color: #333; text-align: center; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 15px; cursor: pointer; border: none;">
                         ← Quay Lại
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

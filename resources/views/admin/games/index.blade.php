@@ -190,8 +190,16 @@
                             <p><strong>Mô tả:</strong></p>
                             <p>${data.description || 'Chưa cập nhật'}</p>
                             <hr />
-                            <p><strong>Link tải xuống:</strong></p>
-                            ${data.download_link ? `<a href="${data.download_link}" target="_blank" class="btn btn-sm btn-primary">Tải xuống</a>` : '<span class="text-muted">Chưa cập nhật</span>'}
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <p><strong>Link tải xuống:</strong></p>
+                                    ${data.download_link ? `<a href="${data.download_link}" target="_blank" class="btn btn-sm btn-primary">Tải xuống</a>` : '<span class="text-muted">Chưa cập nhật</span>'}
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Fanpage hỗ trợ:</strong></p>
+                                    ${data.fanpage_support ? `<a href="${data.fanpage_support}" target="_blank" class="btn btn-sm btn-primary"><i class="bx bxl-facebook"></i> Fanpage</a>` : '<span class="text-muted">Chưa cập nhật</span>'}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;

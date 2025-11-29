@@ -20,6 +20,11 @@ class HomeController extends Controller
         // Lấy các game banner
         $bannerGames = BannerHelper::getBannerGames();
         
+        // Lấy game đầu tiên có fanpage_support để hiển thị menu support
+        $gameWithFanpage = Game::whereNotNull('fanpage_support')
+                                ->where('fanpage_support', '!=', '')
+                                ->first();
+        
         // Lấy các game đề xuất (tất cả games, limit 7, sắp xếp theo sort_order)
         $recommendedGames = Game::with('game_status')
                                 ->orderBy('sort_order', 'asc')
@@ -53,6 +58,6 @@ class HomeController extends Controller
                     ->limit(5)
                     ->get();
         
-        return view('home.index', compact('bannerGames', 'recommendedGames', 'promotions', 'giftcodes', 'news'));
+        return view('home.index', compact('bannerGames', 'gameWithFanpage', 'recommendedGames', 'promotions', 'giftcodes', 'news'));
     }
 }

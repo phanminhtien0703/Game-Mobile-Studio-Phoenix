@@ -31,7 +31,8 @@ class Game extends Model
         'download_link',
         'status_id',
         'sort_order',
-        'download_count'
+        'download_count',
+        'fanpage_support'
     ];
 
     protected $dates = [

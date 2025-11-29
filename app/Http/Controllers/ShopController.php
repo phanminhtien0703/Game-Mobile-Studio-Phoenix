@@ -16,6 +16,11 @@ class ShopController extends Controller
         // Lấy các game banner
         $bannerGames = BannerHelper::getBannerGames();
 
+        // Lấy game có fanpage_support
+        $gameWithFanpage = Game::whereNotNull('fanpage_support')
+                                ->where('fanpage_support', '!=', '')
+                                ->first();
+
         // Lấy các tài khoản bán được phê duyệt - pagination 5 per page
         $accounts = AccountForSale::approved()
                                   ->with('user', 'game')
@@ -24,13 +29,13 @@ class ShopController extends Controller
 
         // Nếu là AJAX request, return chỉ content view
         if (request()->wantsJson()) {
-            $html = view('shop.index', compact('bannerGames', 'accounts'))->render();
+            $html = view('shop.index', compact('bannerGames', 'gameWithFanpage', 'accounts'))->render();
             return response()->json([
                 'content' => $html
             ]);
         }
 
-        return view('shop.index', compact('bannerGames', 'accounts'));
+        return view('shop.index', compact('bannerGames', 'gameWithFanpage', 'accounts'));
     }
 
     public function create()
@@ -40,17 +45,20 @@ class ShopController extends Controller
         }
 
         $bannerGames = BannerHelper::getBannerGames();
+        $gameWithFanpage = Game::whereNotNull('fanpage_support')
+                                ->where('fanpage_support', '!=', '')
+                                ->first();
         $games = Game::select('game_id', 'game_name')->get();
 
         // Nếu là AJAX request, return chỉ content view
         if (request()->wantsJson()) {
-            $html = view('shop.create', compact('games', 'bannerGames'))->render();
+            $html = view('shop.create', compact('games', 'bannerGames', 'gameWithFanpage'))->render();
             return response()->json([
                 'content' => $html
             ]);
         }
 
-        return view('shop.create', compact('games', 'bannerGames'));
+        return view('shop.create', compact('games', 'bannerGames', 'gameWithFanpage'));
     }
 
     public function store(Request $request)
@@ -129,14 +137,19 @@ class ShopController extends Controller
         // Lấy banner games
         $bannerGames = BannerHelper::getBannerGames();
 
+        // Lấy game có fanpage_support
+        $gameWithFanpage = Game::whereNotNull('fanpage_support')
+                                ->where('fanpage_support', '!=', '')
+                                ->first();
+
         // Nếu là AJAX request, return chỉ content view
         if (request()->wantsJson()) {
-            $html = view('shop.show', compact('account', 'bannerGames'))->render();
+            $html = view('shop.show', compact('account', 'bannerGames', 'gameWithFanpage'))->render();
             return response()->json([
                 'content' => $html
             ]);
         }
 
-        return view('shop.show', compact('account', 'bannerGames'));
+        return view('shop.show', compact('account', 'bannerGames', 'gameWithFanpage'));
     }
 }

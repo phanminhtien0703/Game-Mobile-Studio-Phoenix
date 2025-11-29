@@ -89,6 +89,16 @@
                           @enderror
                         </div>
 
+                        <!-- Fanpage Support -->
+                        <div class="mb-3">
+                          <label class="form-label" for="fanpage_support">Fanpage / Messenger Hỗ Trợ</label>
+                          <input type="text" class="form-control @error('fanpage_support') is-invalid @enderror" id="fanpage_support" name="fanpage_support" placeholder="Nhập URL Facebook fanpage hoặc Messenger (VD: https://www.facebook.com/...)" value="{{ old('fanpage_support') }}">
+                          <small class="form-text text-muted">Tùy chọn: Liên kết hỗ trợ trên Facebook Fanpage hoặc Messenger</small>
+                          @error('fanpage_support')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                          @enderror
+                        </div>
+
                         <!-- Status ID -->
                         <div class="mb-3">
                           <label class="form-label" for="status_id">Trạng Thái <span class="text-danger">*</span></label>
