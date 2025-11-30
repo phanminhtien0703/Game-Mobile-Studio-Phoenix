@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Critical: Boxicons - load synchronously -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/9599bda9420163a6.css') }}" data-precedence="next">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/89c9f9bed05f369f.css') }}" data-precedence="next">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/cfb18acb3accb3c3.css') }}" data-precedence="next">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/c4fa705542f67be7.css') }}" data-precedence="next">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/e6b54ef23715d9a1.css') }}" data-precedence="next">
-    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/9706cae02c06bb94.css') }}" data-precedence="next">
+    
+    <!-- Non-critical: Load CSS with lower priority -->
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/9599bda9420163a6.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/89c9f9bed05f369f.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/cfb18acb3accb3c3.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/c4fa705542f67be7.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/e6b54ef23715d9a1.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
+    <link rel="stylesheet" href="{{ asset('assets/home/next/static/css/9706cae02c06bb94.css') }}" data-precedence="next" media="print" onload="this.onload=null;this.media='all'">
 
     <!-- SEO Meta Tags -->
     <title>Game Mobile Studio - Phoenix | Cổng Game Online Hàng Đầu</title>
@@ -43,6 +47,11 @@
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="32x32">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Async Google Fonts - using modern link preload -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
     @stack('styles')
 </head>
