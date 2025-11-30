@@ -49,6 +49,9 @@ Route::get('/register', [UserController::class, 'showRegister'])->name('register
 Route::post('/register', [UserController::class, 'register'])->name('register.post');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
+// Public Giftcode route
+Route::post('/giftcodes/{giftcode_id}/claim', [GiftcodeController::class, 'claimGiftcode'])->name('giftcodes.claim');
+
 // Admin Login Routes (không cần authentication)
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
@@ -83,7 +86,6 @@ Route::prefix('admin')->middleware(['admin.auth'])->group(function () {
     // Giftcode routes
     Route::resource('giftcodes', GiftcodeController::class)->names('admin.giftcodes');
     Route::get('/giftcodes/{giftcode_id}', [GiftcodeController::class, 'show'])->name('admin.giftcodes.show');
-    Route::post('/giftcodes/{giftcode_id}/claim', [GiftcodeController::class, 'claimGiftcode'])->name('giftcodes.claim');
 
     // Activity routes
     Route::get('/activities', [ActivityController::class, 'index'])->name('admin.activities.index');

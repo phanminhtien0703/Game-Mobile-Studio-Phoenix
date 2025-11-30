@@ -105,23 +105,28 @@
         @include('layouts.home.footer')
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <script>
-        // Internal Navigation Handler - navigate to internal links in same tab
+        /**
+         * Navigation Handlers
+         * Manages internal links, AJAX navigation, and external link behavior
+         */
+
+        // ========== INTERNAL NAVIGATION HANDLER ==========
+        // Navigate to internal links in same tab
         document.addEventListener('click', function(e) {
             const link = e.target.closest('a');
             if (!link) return;
 
-            // Check for special cases to skip
+            // Skip special cases
             if (link.getAttribute('data-ajax') ||
                 link.hasAttribute('target') ||
                 link.hasAttribute('download') ||
                 e.ctrlKey || 
                 e.metaKey || 
                 e.button === 1) {
-                return; // Let default behavior handle it
+                return;
             }
 
             const href = link.getAttribute('href');
@@ -142,7 +147,6 @@
                     const url = new URL(href);
                     const currentUrl = new URL(window.location.href);
                     
-                    // If same domain and protocol, navigate in same tab
                     if (url.hostname === currentUrl.hostname && 
                         url.protocol === currentUrl.protocol) {
                         e.preventDefault();
@@ -154,7 +158,8 @@
             }
         });
 
-        // AJAX Navigation Handler - only for data-ajax links
+        // ========== AJAX NAVIGATION HANDLER ==========
+        // Load content via AJAX for data-ajax links
         document.addEventListener('click', function(e) {
             const link = e.target.closest('a[data-ajax]');
             if (!link) return;
@@ -162,7 +167,6 @@
             e.preventDefault();
             const url = link.getAttribute('href');
             
-            // Load content via AJAX
             fetch(url, {
                 headers: {
                     'Accept': 'application/json',
@@ -171,24 +175,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Find content container and update only that
                 const contentDiv = document.querySelector('.vplay-content');
-                
-                // Create temporary wrapper to extract scripts
                 const temp = document.createElement('div');
                 temp.innerHTML = data.content;
                 
-                // Get all scripts from new content
                 const scripts = temp.querySelectorAll('script');
                 
-                // Update only the content part (after banner and menu)
-                const contentTarget = contentDiv.querySelector('[data-ajax-target], .vplay-content > *:last-child') 
-                    || contentDiv;
-                
-                // Replace only the dynamic content, not header/menu
                 const mainContent = contentDiv.querySelector('div[style*="min-height"]') 
                     || Array.from(contentDiv.children).find(el => 
-                        el.style.padding === '20px' || el.className.includes('welfare') || el.className.includes('flex')
+                        el.style.padding === '20px' || 
+                        el.className.includes('welfare') || 
+                        el.className.includes('flex')
                     );
                 
                 if (mainContent) {
@@ -197,45 +194,40 @@
                     contentDiv.innerHTML = data.content;
                 }
                 
-                // Execute scripts from new content
                 scripts.forEach(script => {
                     const newScript = document.createElement('script');
                     newScript.textContent = script.textContent;
                     contentDiv.appendChild(newScript);
                 });
                 
-                // Dispatch custom event for carousels to reinitialize
                 document.dispatchEvent(new Event('ajaxContentLoaded'));
-                
-                // Scroll to top
                 window.scrollTo(0, 0);
             })
             .catch(error => {
                 console.error('Error loading content via AJAX:', error);
-                window.location.href = url; // Fallback to regular navigation
+                window.location.href = url;
             });
         });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get current domain
+        // ========== EXTERNAL LINK HANDLER ==========
+        // Open external links in appropriate app based on device
+        document.addEventListener('DOMContentLoaded', function() {
             const currentDomain = window.location.hostname;
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             
-            // Open external links in appropriate app
             document.querySelectorAll("a[href^='http']").forEach(function(link) {
                 const linkUrl = new URL(link.getAttribute('href'), window.location.href);
                 
-                // Only treat as external if domain is different
                 if (linkUrl.hostname !== currentDomain) {
                     link.addEventListener("click", function(e) {
-                        var url = link.getAttribute("href");
-                        if (/Android/i.test(navigator.userAgent)) {
-                            // Android -> mở bằng Chrome
+                        const url = link.getAttribute("href");
+                        
+                        if (isAndroid) {
                             window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end;";
-                        } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                            // iOS -> mở Safari
+                        } else if (isIOS) {
                             window.open(url, "_system");
                         } else {
-                            // Máy khác mở bình thường
                             window.open(url, "_blank");
                         }
                         e.preventDefault();

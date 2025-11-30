@@ -36,44 +36,143 @@
 </div>
 
 <script>
+    /**
+     * Giftcode Management
+     * Handles giftcode claiming and Messenger integration
+     */
     document.addEventListener('DOMContentLoaded', function() {
-        const giftcodeBtns = document.querySelectorAll('.giftcode-btn');
-        const page = '{{ config("social.messenger.page_id") }}'; // Lấy từ config
+        // ========== CONFIGURATION ==========
+        const CONFIG = {
+            pageId: '{{ config("social.messenger.page_id") ?? "game.mobile.studio.phoenix" }}',
+            apiEndpoint: '/giftcodes',
+            claimAction: 'claim',
+            csrfToken: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        };
 
-        giftcodeBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const giftcodeId = this.getAttribute('data-giftcode-id');
-                const msg = this.getAttribute('data-message');
-                
-                // Gửi AJAX request để cập nhật số lượng giftcode đã nhận
-                fetch(`/admin/giftcodes/${giftcodeId}/claim`, {
+        // ========== DOM SELECTORS ==========
+        const SELECTORS = {
+            button: '.giftcode-btn',
+            detailContainer: '.detail',
+            usedQuantityLabel: 'p'
+        };
+
+        // ========== UTILITIES ==========
+        const Utils = {
+            /**
+             * Get CSRF token from meta tag
+             * @returns {string} CSRF token
+             */
+            getCsrfToken() {
+                return CONFIG.csrfToken;
+            },
+
+            /**
+             * Build API endpoint for claiming giftcode
+             * @param {string} giftcodeId - The giftcode ID
+             * @returns {string} Full API URL
+             */
+            buildClaimUrl(giftcodeId) {
+                return `${CONFIG.apiEndpoint}/${giftcodeId}/${CONFIG.claimAction}`;
+            },
+
+            /**
+             * Build Messenger URL with pre-filled message
+             * @param {string} message - Message to send
+             * @returns {string} Messenger URL
+             */
+            buildMessengerUrl(message) {
+                return `https://m.me/${CONFIG.pageId}?text=${encodeURIComponent(message)}`;
+            }
+        };
+
+        // ========== API HANDLER ==========
+        const API = {
+            /**
+             * Claim giftcode via AJAX
+             * @param {string} giftcodeId - The giftcode ID
+             * @returns {Promise} Fetch promise
+             */
+            claimGiftcode(giftcodeId) {
+                return fetch(Utils.buildClaimUrl(giftcodeId), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': Utils.getCsrfToken()
                     }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Cập nhật số lượng đã nhận trên UI
-                        const detailDiv = this.closest('.item').querySelector('.detail');
-                        const usedQuantityText = detailDiv.querySelectorAll('p')[1];
-                        usedQuantityText.textContent = `Người nhận: ${data.used_quantity}`;
-                        
-                        // Mở Messenger
-                        const messengerUrl = `https://m.me/${page}?text=${encodeURIComponent(msg)}`;
-                        window.open(messengerUrl, '_blank');
-                    } else {
-                        alert(data.message || 'Lỗi khi nhận giftcode');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Lỗi khi nhận giftcode');
-                });
+                }).then(response => response.json());
+            }
+        };
+
+        // ========== UI HANDLER ==========
+        const UI = {
+            /**
+             * Update used quantity display
+             * @param {HTMLElement} button - The claim button
+             * @param {number} usedQuantity - New used quantity
+             */
+            updateUsedQuantity(button, usedQuantity) {
+                const detailDiv = button.closest('.item').querySelector(SELECTORS.detailContainer);
+                const paragraphs = detailDiv.querySelectorAll(SELECTORS.usedQuantityLabel);
+                const usedQuantityText = paragraphs[1]; // Second paragraph is used quantity
+                
+                if (usedQuantityText) {
+                    usedQuantityText.textContent = `Người nhận: ${usedQuantity}`;
+                }
+            },
+
+            /**
+             * Show error message
+             * @param {string} message - Error message to display
+             */
+            showError(message) {
+                alert(message || 'Lỗi khi nhận giftcode. Vui lòng thử lại!');
+            },
+
+            /**
+             * Open Messenger window
+             * @param {string} message - Message to send
+             */
+            openMessenger(message) {
+                window.open(Utils.buildMessengerUrl(message), '_blank');
+            }
+        };
+
+        // ========== EVENT HANDLER ==========
+        const EventHandler = {
+            /**
+             * Handle giftcode claim button click
+             * @param {Event} e - Click event
+             */
+            handleClaimClick(e) {
+                e.preventDefault();
+                const button = this;
+                const giftcodeId = button.getAttribute('data-giftcode-id');
+                const message = button.getAttribute('data-message');
+
+                API.claimGiftcode(giftcodeId)
+                    .then(data => {
+                        if (data.success) {
+                            UI.updateUsedQuantity(button, data.used_quantity);
+                            UI.openMessenger(message);
+                        } else {
+                            UI.showError(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Giftcode claim error:', error);
+                        UI.showError('Lỗi khi nhận giftcode. Vui lòng thử lại!');
+                    });
+            }
+        };
+
+        // ========== INITIALIZATION ==========
+        const init = () => {
+            const buttons = document.querySelectorAll(SELECTORS.button);
+            buttons.forEach(btn => {
+                btn.addEventListener('click', EventHandler.handleClaimClick);
             });
-        });
+        };
+
+        init();
     });
 </script>
